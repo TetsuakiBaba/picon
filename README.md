@@ -1,3 +1,4 @@
-# svgclock.js
+# picon
+
 <img src="teaser.png">
-  * https://tetsuakibaba.github.io/svgclock.js/# picon
+  * https://tetsuakibaba.github.io/picon/

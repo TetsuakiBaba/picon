@@ -24,7 +24,7 @@
             Picon is a parametric SVG icon generator that can be easily used with just html tags, such as i, svg or js.
         </p>
 
-        <h1 class="mt-4">icons</h1>
+        <h1 class="display-5 mt-4">icons</h1>
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
@@ -60,7 +60,7 @@
                             <button class="btn btn-secondary btn-sm" id="btn-copy"
                                 data-clipboard-target="#clock_code">copy</button>
                         </div>
-                        <p class="border small p-2 m-0" id="clock_svg">
+                        <p class="border p-2 m-0" style="font-size:0.5em" id="clock_svg">
                             &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;
                             xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;
                             xmlns:svgjs=&quot;http://svgjs.dev/svgjs&quot; width=&quot;80&quot;
@@ -87,8 +87,65 @@
 
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted">battery</h6>
+                        <div id="battery_placeholder" class="text-center" style="font-size:5em;">
+                            <i data-pc data-pc-name="battery" data-pc-percentage="80"></i>
+                        </div>
+
+
+
+                        parameters
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <form class="form-floating">
+                                    <input type="number" data-pc-parameter="percentage" class="form-control"
+                                        data-pc-target-name='battery' value="80" onchange="updateInput(this);">
+                                    <label>data-pc-percentage</label>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- <h5 class="mt-4 card-title">tag</h5> -->
+                        <p class="border card-text small p-2 mt-4 mb-0" id="battery_code">
+                            &lt;i data-pc data-pc-name=&quot;battery&quot;
+                            data-pc-percentage=&quot;80&quot;&gt;&lt;/i&gt;
+                        </p>
+                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#battery_code">copy</button>
+                        </div>
+                        <p class="border p-2 m-0" style="font-size:0.5em" id="battery_svg">
+                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;
+                            xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;
+                            xmlns:svgjs=&quot;http://svgjs.dev/svgjs&quot; width=&quot;80&quot;
+                            height=&quot;80&quot;&gt;&lt;rect width=&quot;64&quot; height=&quot;40&quot;
+                            fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-width=&quot;8&quot;
+                            stroke=&quot;#212529&quot; x=&quot;8&quot; y=&quot;20&quot; rx=&quot;8&quot;
+                            ry=&quot;8&quot;&gt;&lt;/rect&gt;&lt;rect width=&quot;44.800000000000004&quot;
+                            height=&quot;40&quot; fill=&quot;#212529&quot; stroke-linecap=&quot;round&quot;
+                            stroke-width=&quot;0&quot; stroke=&quot;#212529&quot; x=&quot;12&quot;
+                            y=&quot;20&quot;&gt;&lt;/rect&gt;&lt;line x1=&quot;76&quot; y1=&quot;33.6&quot;
+                            x2=&quot;76&quot; y2=&quot;46.4&quot; stroke-linecap=&quot;round&quot;
+                            stroke-width=&quot;8&quot; stroke=&quot;#212529&quot;&gt;&lt;/line&gt;&lt;/svg&gt;
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#battery_svg">copy</button>
+                        </div>
+
+
+
+                    </div>
+                    </p>
+
+
+
+                </div>
+            </div>
         </div>
-        <h1 class="mt-4">Quick start</h1>
+        <h1 class="display-5 mt-4">Quick start</h1>
         <div class="highlight">
             <pre class="p-0 m-0"><code class="p-4 mb-0" id="quick_start_code">&lt;!doctype html&gt;
 &lt;html lang=&quot;en&quot;&gt;
@@ -113,12 +170,12 @@
                     data-clipboard-target="#quick_start_code">copy</button>
             </div>
         </div>
-        <h1 class="mt-4">Dependency</h1>
+        <h1 class="display-5 mt-4">Dependency</h1>
         <p class="mt-4">
             SVG.js: <a href="https://github.com/svgdotjs/svg.js" target="_blank">https://github.com/svgdotjs/svg.js</a>
         </p>
 
-        <h1 class="mt-4">
+        <h1 class="display-5 mt-4">
             License
         </h1>
         <p class="mt-4">

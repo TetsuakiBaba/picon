@@ -8,7 +8,7 @@ picon_defaults = {
         minute: 10,
     },
     battery: {
-        gauge: 80,
+        percentage: 80,
     }
 }
 class picon {
@@ -36,6 +36,7 @@ class picon {
             if (typeof options.battery != 'undefined') {
                 if (typeof options.battery.percentage === 'undefined') options.battery.percentage = picon_defaults.battery.percentage;
             }
+            this.createSVGbattery(dom_key, options);
         }
     }
 
@@ -76,6 +77,31 @@ class picon {
             svg_height / 2 + clock.m.y)
         line.stroke({ color: `${this.color}`, width: line_width, linecap: 'round' });
     }
+    createSVGbattery(dom_key, options = {}) {
+        let svg_width = parseInt(this.fontsize);
+        let svg_height = parseInt(this.fontsize);
+        let line_width = svg_width * 0.1;
+        let percentage = parseInt(options.battery.percentage) / 100;
+
+        // そのままだと追加してしまうので、対象domの中身は一回クリア
+        document.querySelector(`${dom_key}`).innerHTML = '';
+
+        var draw = SVG().addTo(dom_key).size(svg_width, svg_height)
+        var rect = draw.rect(svg_width - line_width * 2.0, 0.5 * svg_height).fill('none').stroke({
+            color: `${this.color}`, width: line_width, linecap: 'round'
+        }).move(line_width, svg_height * 0.25).radius(line_width, line_width)
+
+        var rect = draw.rect((svg_width - line_width * 3.0) * percentage, 0.5 * svg_height).fill(`${this.color}`).stroke({
+            color: `${this.color}`, width: 0, linecap: 'round'
+        }).move(line_width * 1.5, svg_height * 0.25)
+
+        var line = draw.line(
+            svg_width - line_width * 0.5,
+            svg_height * 0.42,
+            svg_width - line_width * 0.5,
+            svg_height * 0.58)
+        line.stroke({ color: `${this.color}`, width: line_width, linecap: 'round' });
+    }
 }
 
 function loadpiconTags() {
@@ -101,7 +127,13 @@ function loadpiconTags() {
                 });
             }
             else if (name == 'battery') {
-
+                let percentage;
+                if ((percentage = e.getAttribute('data-pc-percentage')) == null) { percentage = 80 }
+                new picon(`#${e.id}`, name, {
+                    battery: {
+                        percentage: percentage,
+                    }
+                });
             }
 
             id_count++;

@@ -26,7 +26,8 @@
 
         <h1 class="display-5 mt-4">icons</h1>
         <div class="row">
-            <div class="col-md-6">
+            <!-- clock -->
+            <div class="col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">clock</h6>
@@ -37,18 +38,18 @@
                         parameters
                         <div class="row g-1">
                             <div class="col-md-6">
-                                <form class="form-floating">
+                                <span class="form-floating">
                                     <input type="number" data-pc-parameter="hour" class="form-control"
                                         data-pc-target-name='clock' value="10" onchange="updateInput(this);">
                                     <label>data-pc-hour</label>
-                                </form>
+                                </span>
                             </div>
                             <div class="col-md-6">
-                                <form class="form-floating">
+                                <span class="form-floating">
                                     <input type="number" data-pc-target-name="clock" data-pc-parameter="minute"
                                         class="form-control" value="10" onchange="updateInput(this);">
                                     <label>data-pc-minute</label>
-                                </form>
+                                </span>
                             </div>
                         </div>
                         <!-- <h5 class="mt-4 card-title">tag</h5> -->
@@ -87,7 +88,8 @@
 
                 </div>
             </div>
-            <div class="col-md-6">
+            <!-- battery -->
+            <div class="col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">battery</h6>
@@ -100,11 +102,11 @@
                         parameters
                         <div class="row g-1">
                             <div class="col-md-6">
-                                <form class="form-floating">
+                                <span class="form-floating">
                                     <input type="number" data-pc-parameter="percentage" class="form-control"
                                         data-pc-target-name='battery' value="80" onchange="updateInput(this);">
                                     <label>data-pc-percentage</label>
-                                </form>
+                                </span>
                             </div>
                         </div>
                         <!-- <h5 class="mt-4 card-title">tag</h5> -->
@@ -144,6 +146,92 @@
 
                 </div>
             </div>
+            <!-- calendar -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted">calendar</h6>
+                        <div id="calendar_placeholder" class="text-center" style="font-size:5em;">
+                            <i data-pc data-pc-name="calendar" data-pc-text="25"></i>
+                        </div>
+
+                        parameters
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <span class="form-floating">
+                                    <input type="text" data-pc-parameter="text" class="form-control"
+                                        data-pc-target-name='calendar' value="25" onchange="updateInput(this);">
+                                    <label>data-pc-text</label>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- <h5 class="mt-4 card-title">tag</h5> -->
+                        <p class="border card-text small p-2 mt-4 mb-0" id="calendar_code">
+                            &lt;i data-pc data-pc-name=&quot;calendar&quot; data-pc-text=&quot;25&quot;&gt;&lt;/i&gt;
+                        </p>
+                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#calendar_code">copy</button>
+                        </div>
+                        <p class="border p-2 m-0" style="font-size:0.5em" id="calendar_svg">
+                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;
+                            xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;
+                            xmlns:svgjs=&quot;http://svgjs.dev/svgjs&quot; width=&quot;80&quot;
+                            height=&quot;80&quot;&gt;&lt;rect width=&quot;72&quot; height=&quot;68&quot;
+                            fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-width=&quot;8&quot;
+                            stroke=&quot;#212529&quot; x=&quot;4&quot; y=&quot;8&quot; rx=&quot;8&quot;
+                            ry=&quot;8&quot;&gt;&lt;/rect&gt;&lt;rect width=&quot;72&quot; height=&quot;12&quot;
+                            fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-width=&quot;8&quot;
+                            stroke=&quot;#212529&quot; x=&quot;4&quot; y=&quot;8&quot; rx=&quot;8&quot;
+                            ry=&quot;8&quot;&gt;&lt;/rect&gt;&lt;line x1=&quot;20&quot; y1=&quot;8&quot;
+                            x2=&quot;20&quot; y2=&quot;4&quot; stroke-linecap=&quot;round&quot;
+                            stroke-width=&quot;8&quot; stroke=&quot;#212529&quot;&gt;&lt;/line&gt;&lt;line
+                            x1=&quot;60&quot; y1=&quot;8&quot; x2=&quot;60&quot; y2=&quot;4&quot;
+                            stroke-linecap=&quot;round&quot; stroke-width=&quot;8&quot;
+                            stroke=&quot;#212529&quot;&gt;&lt;/line&gt;&lt;text letter-spacing=&quot;-0.05em&quot;
+                            font-family=&quot;Helvetica, Arial, san-serif&quot; font-size=&quot;48&quot;
+                            text-anchor=&quot;middle&quot; font-style=&quot;normal&quot; font-weight=&quot;600&quot;
+                            x=&quot;40&quot; y=&quot;64&quot;&gt;&lt;tspan dy=&quot;0&quot;
+                            x=&quot;40&quot;&gt;25&lt;/tspan&gt;&lt;/text&gt;&lt;/svg&gt;
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#calendar_svg">copy</button>
+                        </div>
+
+
+
+                    </div>
+                    </p>
+
+
+
+                </div>
+            </div>
+            <!-- cash -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted">cash(TBA)</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- speaker -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted">speaker(TBA)</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- speaker -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted">speedometer(TBA)</h6>
+                    </div>
+                </div>
+            </div>
         </div>
         <h1 class="display-5 mt-4">Quick start</h1>
         <div class="highlight">
@@ -165,15 +253,75 @@
 &lt;/body&gt;
 
 &lt;/html&gt;</code></pre>
+
             <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-dark btn-sm">
+                    <a class="text-white text-decoration-none"
+                        href="https://stackblitz.com/edit/web-platform-3d85cn?file=index.html" target="_blank"><i
+                            class="bi bi-lightning-fill"></i> try on stackblitz.com</a>
+                </button>
                 <button class="btn btn-secondary btn-sm" id="btn-copy"
                     data-clipboard-target="#quick_start_code">copy</button>
             </div>
         </div>
+        <h1 class="display-5 mt-4">CDN</h1>
+        <p>Please be sure that you need to include svg.js as well as picon.js.</p>
+        <div class="highlight">
+            <pre class="p-0 m-0"><code class="p-4 mb-0" id="cdn_code">&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js&quot;
+        integrity=&quot;sha512-I+rKw3hArzZIHzrkdELbKqrXfkSvw/h0lW/GgB8FThaBVz2e5ZUlSW8kY8v3q6wq37eybIwyufkEZxe4qSlGcg==&quot;
+        crossorigin=&quot;anonymous&quot; referrerpolicy=&quot;no-referrer&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/gh/TetsuakiBaba/picon@main/picon.js&quot; crossorigin=&quot;anonymous&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+</code></pre>
+            <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-secondary btn-sm" id="btn-copy" data-clipboard-target="#cdn_code">copy</button>
+            </div>
+        </div>
+
+        <h1 class="display-5 mt-4">Via JavaScript</h1>
+        <p class="mt-4 mb-0">
+            Create a picon with a single line of JavaScript;
+        </p>
+        <div class="highlight">
+            <pre class="p-0 m-0">
+                <code class="p-4 mb-0" id="js_code">new picon('#svg', 'clock', {
+    clock: {
+        hour: 10,
+        minute: 8,
+    }
+});</code></pre>
+            <div class="d-grid mb-2 gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-secondary btn-sm" id="btn-copy" data-clipboard-target="#js_code">copy</button>
+            </div>
+        </div>
+        <h2 class="mt-2">Options</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">name</th>
+                    <th scope="col">parameter(s)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">clock</th>
+                    <td>hour, minute</td>
+                </tr>
+                <tr>
+                    <th scope="row">battery</th>
+                    <td>percentage(0-100)</td>
+                </tr>
+                <tr>
+                    <th scope="row">calendar</th>
+                    <td>text(Up to 2 letters are beautiful in appearance. 1 character is better for 2-byte characters)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <h1 class="display-5 mt-4">Dependency</h1>
         <p class="mt-4">
             SVG.js: <a href="https://github.com/svgdotjs/svg.js" target="_blank">https://github.com/svgdotjs/svg.js</a>
         </p>
+
 
         <h1 class="display-5 mt-4">
             License
@@ -181,62 +329,62 @@
         <p class="mt-4">
             MIT License
         </p>
-    </div>
 
 
 
-    <hr>
-    <footer class="small text-muted text-center mb-4">
-        2023 &copy; Tetsuaki baba <a href="https://github.com/TetsuakiBaba/picon" target="_blank"><i
-                class="bi bi-github"></i></a>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
 
-    <!-- highlightjs 本体 -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/highlight.min.js"></script>
-    <script>
-        hljs.initHighlightingOnLoad(); //highlight.js初期起動
-    </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <hr>
+        <footer class="small text-muted text-center mb-4">
+            2023 &copy; Tetsuaki baba <a href="https://github.com/TetsuakiBaba/picon" target="_blank"><i
+                    class="bi bi-github"></i></a>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"
-        integrity="sha512-I+rKw3hArzZIHzrkdELbKqrXfkSvw/h0lW/GgB8FThaBVz2e5ZUlSW8kY8v3q6wq37eybIwyufkEZxe4qSlGcg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
-    <script src="./picon.js"></script>
-    <script src="./index.js"></script>
+        <!-- highlightjs 本体 -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/styles/default.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.3.2/highlight.min.js"></script>
+        <script>
+            hljs.initHighlightingOnLoad(); //highlight.js初期起動
+        </script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
-    <script>
-        let es = document.querySelectorAll('#btn-copy');
-        console.log(es);
-        for (let element of es) {
-            let clipboard = new ClipboardJS(element);
-            clipboard.on('success', function (e) {
-                const currentLabel = element.innerHTML;
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js"
+            integrity="sha512-I+rKw3hArzZIHzrkdELbKqrXfkSvw/h0lW/GgB8FThaBVz2e5ZUlSW8kY8v3q6wq37eybIwyufkEZxe4qSlGcg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
+        <script src="./picon.js"></script>
+        <script src="./index.js"></script>
 
-                // Exit label update when already in progress
-                if (element.innerHTML === 'Copied!') {
-                    return;
-                }
+        <script>
+            let es = document.querySelectorAll('#btn-copy');
+            console.log(es);
+            for (let element of es) {
+                let clipboard = new ClipboardJS(element);
+                clipboard.on('success', function (e) {
+                    const currentLabel = element.innerHTML;
 
-                // Update button label
-                element.innerHTML = 'Copied!';
-                element.classList.replace('btn-secondary', 'btn-success');
+                    // Exit label update when already in progress
+                    if (element.innerHTML === 'Copied!') {
+                        return;
+                    }
 
-                // Revert button label after 3 seconds
-                setTimeout(function () {
-                    element.innerHTML = currentLabel;
-                    element.classList.replace('btn-success', 'btn-secondary');
-                }, 3000)
-            })
-        }
+                    // Update button label
+                    element.innerHTML = 'Copied!';
+                    element.classList.replace('btn-secondary', 'btn-success');
 
-    </script>
+                    // Revert button label after 3 seconds
+                    setTimeout(function () {
+                        element.innerHTML = currentLabel;
+                        element.classList.replace('btn-success', 'btn-secondary');
+                    }, 3000)
+                })
+            }
 
-    <script>
+        </script>
+
+        <script>
         // let colors = ['#026E81', '#00ABBD', '#0099DD', '#FF9933', '#A1C7E0']
         // for (let h = 0; h < 12; h++) {
         //     for (let m = 0; m < 60; m += 10) {
@@ -249,7 +397,7 @@
         // createSVGClock('#svg2', { hour: 17, minute: 0 });
         // createSVGClock('#svg3', { color: '#4488AA' });
         // createSVGClock('#svg4', { size: 50 });
-    </script>
+        </script>
 </body>
 
 </html>

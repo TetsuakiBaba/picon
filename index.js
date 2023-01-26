@@ -8,7 +8,7 @@ function updateInput(dom) {
     let placeholder = document.querySelector(`#${name}_placeholder`);
     let picon = placeholder.querySelector('i');
     picon.setAttribute(`data-pc-${parameter}`, dom.value);
-    loadpiconTags();
+    loadPiconTags();
 
     let picon_clone = picon.cloneNode();
     picon_clone.removeAttribute('id');

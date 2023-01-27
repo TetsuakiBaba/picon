@@ -16,6 +16,9 @@ picon_defaults = {
     },
     badge: {
         text: 'XR',
+    },
+    circle: {
+        text: '神'
     }
 }
 class picon {
@@ -61,6 +64,12 @@ class picon {
                 if (typeof options.badge.text === 'undefined') options.badge.text = picon_defaults.badge.text;
             }
             this.createSVGBadge(dom_key, options);
+        }
+        else if (name === 'circle') {
+            if (typeof options.circle != 'undefined') {
+                if (typeof options.circle.text === 'undefined') options.circle.text = picon_defaults.circle.text;
+            }
+            this.createSVGCircle(dom_key, options);
         }
     }
 
@@ -214,6 +223,33 @@ class picon {
 
     }
 
+    createSVGCircle(dom_key, options = {}) {
+
+        // そのままだと追加してしまうので、対象domの中身は一回クリア
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h)
+
+        //        draw.rect(this.size.w, this.size.h).fill('none').stroke({ color: 'red' })
+        draw.ellipse(this.size.w - this.line_width, this.size.h - this.line_width)
+            .fill('none')
+            .stroke({
+                color: `${this.color}`, width: this.line_width
+            })
+            .move(this.line_width / 2, this.line_width / 2);
+        let t = draw.text(options.badge.text).fill(this.color);
+        t.attr('letter-spacing', '-0.05em');
+        t.font({
+            family: 'Helvetica, Arial, san-serif',
+            size: this.fontsize * 0.5,
+            leading: '1em',
+            anchor: 'middle',
+            style: 'normal',
+            weight: '600',
+        })
+        t.move(this.size.w / 2 - t.length() / 2, this.line_width * 2.2)
+
+    }
+
 }
 
 
@@ -263,6 +299,15 @@ function loadPiconTags() {
             else if (name == 'badge') {
                 let text;
                 if ((text = e.getAttribute('data-pc-text')) == null) { text = 'BA' }
+                new picon(`#${e.id}`, name, {
+                    badge: {
+                        text: text,
+                    }
+                });
+            }
+            else if (name == 'circle') {
+                let text;
+                if ((text = e.getAttribute('data-pc-text')) == null) { text = picon_defaults.circle.text }
                 new picon(`#${e.id}`, name, {
                     badge: {
                         text: text,

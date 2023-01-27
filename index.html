@@ -273,6 +273,56 @@
                     </div>
                 </div>
             </div>
+            <!-- circle -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted">circle</h6>
+                        <div id="circle_placeholder" class="text-center" style="font-size:5em;">
+                            <i data-pc-id="circle" data-pc-text="神"></i>
+                        </div>
+
+
+                        parameters
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" data-pc-parameter="text" class="form-control"
+                                        data-pc-target-name='circle' value="神" onchange="updateInput(this);">
+                                    <label>data-pc-text</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <h5 class="mt-4 card-title">tag</h5> -->
+                        <p class="border card-text small p-2 mt-4 mb-0" id="circle_code">
+                            &lt;i data-pc-id=&quot;circle&quot; data-pc-text=&quot;神&quot;&gt;&lt;/i&gt;
+                        </p>
+                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#circle_code">copy</button>
+                        </div>
+                        <p class="border p-2 m-0" style="font-size:0.5em" id="circle_svg">
+                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;
+                            xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;
+                            xmlns:svgjs=&quot;http://svgjs.dev/svgjs&quot; width=&quot;80&quot;
+                            height=&quot;80&quot;&gt;&lt;ellipse rx=&quot;36&quot; ry=&quot;36&quot; cx=&quot;40&quot;
+                            cy=&quot;40&quot; fill=&quot;none&quot; stroke-width=&quot;8&quot;
+                            stroke=&quot;#212529&quot;&gt;&lt;/ellipse&gt;&lt;text fill=&quot;#212529&quot;
+                            letter-spacing=&quot;-0.05em&quot; font-family=&quot;Helvetica, Arial, san-serif&quot;
+                            font-size=&quot;40&quot; text-anchor=&quot;middle&quot; font-style=&quot;normal&quot;
+                            font-weight=&quot;600&quot; x=&quot;40&quot; y=&quot;54.6&quot;&gt;&lt;tspan
+                            dy=&quot;0&quot; x=&quot;40&quot;&gt;神&lt;/tspan&gt;&lt;/text&gt;&lt;/svg&gt;
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#circle_svg">copy</button>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
             <!-- speaker -->
             <div class="col-md-6 col-lg-4">
                 <div class="card">

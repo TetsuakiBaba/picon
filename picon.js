@@ -9,16 +9,24 @@ picon_defaults = {
     },
     battery: {
         percentage: 80,
+        show_value: false,
     },
     calendar: {
         text: '25',
+    },
+    badge: {
+        text: 'XR',
     }
 }
 class picon {
     constructor(dom_key, name, options = {}) {
         let element = document.querySelector(dom_key);
-        this.fontsize = window.getComputedStyle(element).getPropertyValue('font-size');
+        this.fontsize = parseInt(window.getComputedStyle(element).getPropertyValue('font-size'));
         this.color = window.getComputedStyle(element).getPropertyValue('color');
+        this.size = {}
+        this.size.w = this.fontsize;
+        this.size.h = this.fontsize;
+        this.line_width = this.fontsize * 0.1;
 
         if (name === 'clock') {
             // optionが全く定義されていない
@@ -38,6 +46,7 @@ class picon {
         else if (name === 'battery') {
             if (typeof options.battery != 'undefined') {
                 if (typeof options.battery.percentage === 'undefined') options.battery.percentage = picon_defaults.battery.percentage;
+                if (typeof options.battery.show_value === 'undefined') options.battery.show_value = picon_defaults.battery.show_value;
             }
             this.createSVGbattery(dom_key, options);
         }
@@ -47,14 +56,17 @@ class picon {
             }
             this.createSVGCalendar(dom_key, options);
         }
+        else if (name === 'badge') {
+            if (typeof options.badge != 'undefined') {
+                if (typeof options.badge.text === 'undefined') options.badge.text = picon_defaults.badge.text;
+            }
+            this.createSVGBadge(dom_key, options);
+        }
     }
 
     createSVGClock(dom_key, options = {}) {
-        let svg_width = parseInt(this.fontsize);
-        let svg_height = parseInt(this.fontsize);
-        let line_width = svg_width * 0.1;
-        let h_length = svg_width * 0.18;
-        let m_length = svg_width * 0.27;
+        let h_length = this.size.w * 0.18;
+        let m_length = this.size.w * 0.27;
         let h = options.clock.hour;
         let m = options.clock.minute;
         let clock = {
@@ -69,32 +81,29 @@ class picon {
         }
 
         document.querySelector(`${dom_key}`).innerHTML = '';
-        var draw = SVG().addTo(dom_key).size(svg_width, svg_height);
+        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h);
 
-        //draw.rect(svg_width, svg_height).fill('none').stroke({ color: 'red' })
-        draw.ellipse(svg_width - line_width, svg_height - line_width)
+        //draw.rect(this.size.w, this.size.h).fill('none').stroke({ color: 'red' })
+        draw.ellipse(this.size.w - this.line_width, this.size.h - this.line_width)
             .fill('none')
             .stroke({
-                color: `${this.color}`, width: line_width
+                color: `${this.color}`, width: this.line_width
             })
-            .move(line_width / 2, line_width / 2);
+            .move(this.line_width / 2, this.line_width / 2);
         var line = draw.line(
-            svg_width / 2,
-            svg_height / 2,
-            svg_width / 2 + clock.h.x,
-            svg_height / 2 + clock.h.y)
-        line.stroke({ color: `${this.color}`, width: line_width, linecap: 'round' });
+            this.size.w / 2,
+            this.size.h / 2,
+            this.size.w / 2 + clock.h.x,
+            this.size.h / 2 + clock.h.y)
+        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
         var line = draw.line(
-            svg_width / 2,
-            svg_height / 2,
-            svg_width / 2 + clock.m.x,
-            svg_height / 2 + clock.m.y)
-        line.stroke({ color: `${this.color}`, width: line_width, linecap: 'round' });
+            this.size.w / 2,
+            this.size.h / 2,
+            this.size.w / 2 + clock.m.x,
+            this.size.h / 2 + clock.m.y)
+        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
     }
     createSVGbattery(dom_key, options = {}) {
-        let svg_width = parseInt(this.fontsize);
-        let svg_height = parseInt(this.fontsize);
-        let line_width = svg_width * 0.1;
         let percentage = parseInt(options.battery.percentage) / 100;
         if (percentage < 0.0) percentage = 0.0;
         if (percentage > 1.0) percentage = 1.0;
@@ -102,85 +111,121 @@ class picon {
         // そのままだと追加してしまうので、対象domの中身は一回クリア
         document.querySelector(`${dom_key}`).innerHTML = '';
 
-        var draw = SVG().addTo(dom_key).size(svg_width, svg_height)
+        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h)
 
-        var rect = draw.rect(svg_width - line_width * 2.0, 0.5 * svg_height).fill('none').stroke({
-            color: `${this.color}`, width: line_width, linecap: 'round'
-        }).move(line_width, svg_height * 0.25).radius(line_width, line_width)
+        var rect = draw.rect(this.size.w - this.line_width * 2.0, 0.5 * this.size.h).fill('none').stroke({
+            color: `${this.color}`, width: this.line_width, linecap: 'round'
+        }).move(this.line_width, this.size.h * 0.25).radius(this.line_width, this.line_width)
 
-        var rect = draw.rect((svg_width - line_width * 3.0) * percentage, 0.5 * svg_height).fill(`${this.color}`).stroke({
+        var rect = draw.rect((this.size.w - this.line_width * 3.0) * percentage, 0.5 * this.size.h).fill(`${this.color}`).stroke({
             color: `${this.color}`, width: 1, linecap: 'round'
-        }).move(line_width * 1.5, svg_height * 0.25)
+        }).move(this.line_width * 1.5, this.size.h * 0.25)
 
         var line = draw.line(
-            svg_width - line_width * 0.5,
-            svg_height * 0.42,
-            svg_width - line_width * 0.5,
-            svg_height * 0.58)
-        line.stroke({ color: `${this.color}`, width: line_width, linecap: 'round' });
+            this.size.w - this.line_width * 0.5,
+            this.size.h * 0.42,
+            this.size.w - this.line_width * 0.5,
+            this.size.h * 0.58)
+        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
+
+        if (options.battery.show_value) {
+            let t = draw.text(options.battery.percentage).fill('#555555');
+            t.attr('letter-spacing', '-0.05em');
+            t.font({
+                family: 'Helvetica, Arial, san-serif',
+                size: this.fontsize * 0.5,
+                leading: '1em',
+                anchor: 'middle',
+                style: 'normal',
+                weight: '600',
+            })
+            t.move(this.size.w / 2 - t.length() / 2, this.line_width * 2.2)
+        }
     }
 
     createSVGCalendar(dom_key, options = {}) {
-        let svg_width = parseInt(this.fontsize);
-        let svg_height = parseInt(this.fontsize);
-        this.fontsize = parseInt(this.fontsize) / 2;
-        let line_width = svg_width * 0.1;
         let text = options.calendar.text;
 
         // そのままだと追加してしまうので、対象domの中身は一回クリア
         document.querySelector(`${dom_key}`).innerHTML = '';
 
-        var draw = SVG().addTo(dom_key).size(svg_width, svg_height)
-        //draw.rect(svg_width, svg_height).fill('none').stroke({ color: 'red' })
-        var rect = draw.rect(svg_width - line_width, svg_height - line_width - line_width * 0.5).fill('none').stroke({
-            color: `${this.color}`, width: line_width, linecap: 'round'
-        }).move(line_width * 0.5, line_width * 1.0).radius(line_width, line_width)
+        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h)
+        //draw.rect(this.size.w, this.size.h).fill('none').stroke({ color: 'red' })
+        var rect = draw.rect(this.size.w - this.line_width, this.size.h - this.line_width - this.line_width * 0.5).fill('none').stroke({
+            color: `${this.color}`, width: this.line_width, linecap: 'round'
+        }).move(this.line_width * 0.5, this.line_width * 1.0).radius(this.line_width, this.line_width)
 
-        var rect = draw.rect(svg_width - line_width, line_width * 1.5).fill('none').stroke({
-            color: `${this.color}`, width: line_width, linecap: 'round'
-        }).move(line_width * 0.5, line_width * 1.0).radius(line_width, line_width)
-
-        var line = draw.line(
-            svg_width * 0.25,
-            line_width * 1.0,
-            svg_width * 0.25,
-            line_width * 0.5)
-        line.stroke({ color: `${this.color}`, width: line_width, linecap: 'round' });
+        var rect = draw.rect(this.size.w - this.line_width, this.line_width * 1.5).fill('none').stroke({
+            color: `${this.color}`, width: this.line_width, linecap: 'round'
+        }).move(this.line_width * 0.5, this.line_width * 1.0).radius(this.line_width, this.line_width)
 
         var line = draw.line(
-            svg_width * 0.75,
-            line_width * 1.0,
-            svg_width * 0.75,
-            line_width * 0.5)
-        line.stroke({ color: `${this.color}`, width: line_width, linecap: 'round' });
+            this.size.w * 0.25,
+            this.line_width * 1.0,
+            this.size.w * 0.25,
+            this.line_width * 0.5)
+        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
+
+        var line = draw.line(
+            this.size.w * 0.75,
+            this.line_width * 1.0,
+            this.size.w * 0.75,
+            this.line_width * 0.5)
+        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
 
 
         let t = draw.text(text);
         t.attr('letter-spacing', '-0.05em');
         t.font({
             family: 'Helvetica, Arial, san-serif',
-            size: this.fontsize * 1.2,
+            size: this.fontsize * 0.6,
             leading: '1em',
             anchor: 'middle',
             style: 'normal',
             weight: '600',
         })
-        t.move(svg_width / 2 - t.length() / 2, line_width * 2.5)
-        //t.move(svg_width * 0.23, svg_height * 0.32);
+        t.move(this.size.w / 2 - t.length() / 2, this.line_width * 2.5)
+        //t.move(this.size.w * 0.23, this.size.h * 0.32);
 
     }
+
+    createSVGBadge(dom_key, options = {}) {
+
+        // そのままだと追加してしまうので、対象domの中身は一回クリア
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h)
+
+        //draw.rect(this.size.w, this.size.h).fill('none').stroke({ color: 'red' })
+        var rect = draw.rect(this.size.w - this.line_width * 2.0, 0.6 * this.size.h).fill('none').stroke({
+            color: `${this.color}`, width: this.line_width, linecap: 'round'
+        }).move(this.line_width, this.size.h * 0.25).radius(this.line_width, this.line_width)
+
+        let t = draw.text(options.badge.text).fill(this.color);
+        t.attr('letter-spacing', '-0.05em');
+        t.font({
+            family: 'Helvetica, Arial, san-serif',
+            size: this.fontsize * 0.4,
+            leading: '1em',
+            anchor: 'middle',
+            style: 'normal',
+            weight: '600',
+        })
+        t.move(this.size.w / 2 - t.length() / 2, this.line_width * 3.2)
+
+    }
+
 }
 
 
 function loadPiconTags() {
-    let elements = document.querySelectorAll('i[data-pc]');
+    let elements = document.querySelectorAll('i[data-pc-id]');
     //for (let e of elements = elements.querySelectorAll('[data-pc]');
-    console.log(elements);
+
     // piconタグを見つけた場合は該当箇所にsvgアイコンを挿入
     if (elements.length > 0) {
         let id_count = 0;
         for (let e of elements) {
-            const name = e.getAttribute('data-pc-name')
+            const name = e.getAttribute('data-pc-id')
             const fontsize = window.getComputedStyle(e).getPropertyValue('font-size');
             e.id = `picon_${id_count}`;
             if (name == 'clock') {
@@ -196,10 +241,13 @@ function loadPiconTags() {
             }
             else if (name == 'battery') {
                 let percentage;
+                let show_value;
                 if ((percentage = e.getAttribute('data-pc-percentage')) == null) { percentage = 80 }
+                if ((show_value = Boolean(e.getAttribute('data-pc-show-value'))) == null) { show_value = picon_defaults.battery.show_value }
                 new picon(`#${e.id}`, name, {
                     battery: {
                         percentage: percentage,
+                        show_value: show_value,
                     }
                 });
             }
@@ -208,6 +256,15 @@ function loadPiconTags() {
                 if ((text = e.getAttribute('data-pc-text')) == null) { text = '25' }
                 new picon(`#${e.id}`, name, {
                     calendar: {
+                        text: text,
+                    }
+                });
+            }
+            else if (name == 'badge') {
+                let text;
+                if ((text = e.getAttribute('data-pc-text')) == null) { text = 'BA' }
+                new picon(`#${e.id}`, name, {
+                    badge: {
                         text: text,
                     }
                 });

@@ -21,7 +21,7 @@
     <div class="container-sm">
         <h1 class="display-1 pt-5">Picon</h1>
         <p class="lead">
-            Picon is a parametric SVG icon generator that can be easily used with just html tags, such as i, svg or js.
+            Picon is a parametric SVG icon generator that can be easily used with just a html tag or JavaScript.
         </p>
         <iframe src="https://ghbtns.com/github-btn.html?user=TetsuakiBaba&repo=picon&type=star&count=true&v=2"
             frameborder="0" scrolling="0" width="150" height="20" title="GitHub"></iframe>
@@ -34,7 +34,7 @@
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">clock</h6>
                         <div id="clock_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc data-pc-name="clock"></i>
+                            <i data-pc-id="clock"></i>
                         </div>
 
                         parameters
@@ -56,7 +56,7 @@
                         </div>
                         <!-- <h5 class="mt-4 card-title">tag</h5> -->
                         <p class="border card-text small p-2 mt-4 mb-0" id="clock_code">
-                            &lt;i data-pc data-pc-name=&quot;clock&quot; data-pc-hour=&quot;10&quot;
+                            &lt;i data-pc-id=&quot;clock&quot; data-pc-hour=&quot;10&quot;
                             data-pc-minute=&quot;10&quot;&gt;&lt;/i&gt;
                         </p>
                         <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
@@ -96,7 +96,7 @@
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">battery</h6>
                         <div id="battery_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc data-pc-name="battery" data-pc-percentage="80"></i>
+                            <i data-pc-id="battery" data-pc-percentage="80"></i>
                         </div>
 
 
@@ -110,10 +110,20 @@
                                     <label>data-pc-percentage</label>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select type="number" data-pc-parameter="show-value" class="form-select"
+                                        data-pc-target-name='battery' value="80" onchange="updateInput(this);">
+                                        <option selected>false</option>
+                                        <option>true</option>
+                                    </select>
+                                    <label>data-pc-show-value</label>
+                                </div>
+                            </div>
                         </div>
                         <!-- <h5 class="mt-4 card-title">tag</h5> -->
                         <p class="border card-text small p-2 mt-4 mb-0" id="battery_code">
-                            &lt;i data-pc data-pc-name=&quot;battery&quot;
+                            &lt;i data-pc-id=&quot;battery&quot;
                             data-pc-percentage=&quot;80&quot;&gt;&lt;/i&gt;
                         </p>
                         <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
@@ -154,7 +164,7 @@
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">calendar</h6>
                         <div id="calendar_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc data-pc-name="calendar" data-pc-text="25"></i>
+                            <i data-pc-id="calendar" data-pc-text="25"></i>
                         </div>
 
                         parameters
@@ -169,7 +179,7 @@
                         </div>
                         <!-- <h5 class="mt-4 card-title">tag</h5> -->
                         <p class="border card-text small p-2 mt-4 mb-0" id="calendar_code">
-                            &lt;i data-pc data-pc-name=&quot;calendar&quot; data-pc-text=&quot;25&quot;&gt;&lt;/i&gt;
+                            &lt;i data-pc-id=&quot;calendar&quot; data-pc-text=&quot;25&quot;&gt;&lt;/i&gt;
                         </p>
                         <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
                             <button class="btn btn-secondary btn-sm" id="btn-copy"
@@ -210,11 +220,56 @@
 
                 </div>
             </div>
-            <!-- cash -->
+            <!-- badge -->
             <div class="col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-subtitle text-muted">cash(TBA)</h6>
+                        <h6 class="card-subtitle text-muted">badge</h6>
+                        <div id="badge_placeholder" class="text-center" style="font-size:5em;">
+                            <i data-pc-id="badge" data-pc-text="XR"></i>
+                        </div>
+
+
+                        parameters
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" data-pc-parameter="text" class="form-control"
+                                        data-pc-target-name='badge' value="XR" onchange="updateInput(this);">
+                                    <label>data-pc-text</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <h5 class="mt-4 card-title">tag</h5> -->
+                        <p class="border card-text small p-2 mt-4 mb-0" id="badge_code">
+                            &lt;i data-pc-id=&quot;badge&quot;
+                            data-pc-percentage=&quot;80&quot;&gt;&lt;/i&gt;
+                        </p>
+                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#badge_code">copy</button>
+                        </div>
+                        <p class="border p-2 m-0" style="font-size:0.5em" id="badge_svg">
+                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;
+                            xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;
+                            xmlns:svgjs=&quot;http://svgjs.dev/svgjs&quot; width=&quot;80&quot;
+                            height=&quot;80&quot;&gt;&lt;rect width=&quot;64&quot; height=&quot;40&quot;
+                            fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-width=&quot;8&quot;
+                            stroke=&quot;#212529&quot; x=&quot;8&quot; y=&quot;20&quot; rx=&quot;8&quot;
+                            ry=&quot;8&quot;&gt;&lt;/rect&gt;&lt;rect width=&quot;44.800000000000004&quot;
+                            height=&quot;40&quot; fill=&quot;#212529&quot; stroke-linecap=&quot;round&quot;
+                            stroke-width=&quot;0&quot; stroke=&quot;#212529&quot; x=&quot;12&quot;
+                            y=&quot;20&quot;&gt;&lt;/rect&gt;&lt;line x1=&quot;76&quot; y1=&quot;33.6&quot;
+                            x2=&quot;76&quot; y2=&quot;46.4&quot; stroke-linecap=&quot;round&quot;
+                            stroke-width=&quot;8&quot; stroke=&quot;#212529&quot;&gt;&lt;/line&gt;&lt;/svg&gt;
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#badge_svg">copy</button>
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>
@@ -247,7 +302,7 @@
 &lt;/head&gt;
 
 &lt;body&gt;
-    &lt;i data-pc data-pc-name=&quot;clock&quot; data-pc-hour=&quot;10&quot; data-pc-minute=&quot;10&quot;&gt;&lt;/i&gt;
+    &lt;i data-pc-id=&quot;clock&quot; data-pc-hour=&quot;10&quot; data-pc-minute=&quot;10&quot;&gt;&lt;/i&gt;
     &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js&quot;
         integrity=&quot;sha512-I+rKw3hArzZIHzrkdELbKqrXfkSvw/h0lW/GgB8FThaBVz2e5ZUlSW8kY8v3q6wq37eybIwyufkEZxe4qSlGcg==&quot;
         crossorigin=&quot;anonymous&quot; referrerpolicy=&quot;no-referrer&quot;&gt;&lt;/script&gt;
@@ -310,7 +365,7 @@
                 </tr>
                 <tr>
                     <th scope="row">battery</th>
-                    <td>percentage(0-100)</td>
+                    <td>percentage(0-100), show_value(true, false)</td>
                 </tr>
                 <tr>
                     <th scope="row">calendar</th>

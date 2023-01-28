@@ -19,6 +19,11 @@ picon_defaults = {
     },
     circle: {
         text: '神'
+    },
+    arrow: {
+        angle: 0,
+        surround: 'none',
+        type: 'normal',
     }
 }
 class picon {
@@ -71,6 +76,12 @@ class picon {
             }
             this.createSVGCircle(dom_key, options);
         }
+        else if (name === 'arrow') {
+            if (typeof options.arrow != 'undefined') {
+                if (typeof options.arrow.angle === 'undefined') options.arrow.angle = picon_defaults.arrow.angle;
+            }
+            this.createSVGArrow(dom_key, options);
+        }
     }
 
     createSVGClock(dom_key, options = {}) {
@@ -90,27 +101,18 @@ class picon {
         }
 
         document.querySelector(`${dom_key}`).innerHTML = '';
-        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h);
-
-        //draw.rect(this.size.w, this.size.h).fill('none').stroke({ color: 'red' })
-        draw.ellipse(this.size.w - this.line_width, this.size.h - this.line_width)
-            .fill('none')
-            .stroke({
-                color: `${this.color}`, width: this.line_width
-            })
-            .move(this.line_width / 2, this.line_width / 2);
-        var line = draw.line(
-            this.size.w / 2,
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        this.ellipse(this.size.w / 2, this.size.h / 2,
+            this.size.w / 2 - this.line_width / 2, this.size.h / 2 - this.line_width / 2);
+        this.line(this.size.w / 2,
             this.size.h / 2,
             this.size.w / 2 + clock.h.x,
             this.size.h / 2 + clock.h.y)
-        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
-        var line = draw.line(
+        this.line(
             this.size.w / 2,
             this.size.h / 2,
             this.size.w / 2 + clock.m.x,
             this.size.h / 2 + clock.m.y)
-        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
     }
     createSVGbattery(dom_key, options = {}) {
         let percentage = parseInt(options.battery.percentage) / 100;
@@ -119,151 +121,255 @@ class picon {
 
         // そのままだと追加してしまうので、対象domの中身は一回クリア
         document.querySelector(`${dom_key}`).innerHTML = '';
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
 
-        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h)
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
 
-        var rect = draw.rect(this.size.w - this.line_width * 2.0, 0.5 * this.size.h).fill('none').stroke({
-            color: `${this.color}`, width: this.line_width, linecap: 'round'
-        }).move(this.line_width, this.size.h * 0.25).radius(this.line_width, this.line_width)
+        // frame of battery
+        this.rect(this.line_width * 0.5, this.size.h * 0.25,
+            this.size.w - this.line_width * 1.5, 0.5 * this.size.h);
 
-        var rect = draw.rect((this.size.w - this.line_width * 3.0) * percentage, 0.5 * this.size.h).fill(`${this.color}`).stroke({
-            color: `${this.color}`, width: 1, linecap: 'round'
-        }).move(this.line_width * 1.5, this.size.h * 0.25)
+        // value of battery
+        this.rect(this.line_width, this.size.h * 0.25,
+            (this.size.w - this.line_width * 2.5) * percentage, 0.5 * this.size.h, { fill: this.color, stroke_width: 0.5, rx: 0, ry: 0 })
 
-        var line = draw.line(
-            this.size.w - this.line_width * 0.5,
-            this.size.h * 0.42,
-            this.size.w - this.line_width * 0.5,
-            this.size.h * 0.58)
-        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
-
+        // +
+        this.line(this.size.w - this.line_width * 0.5, this.size.h * 0.42,
+            this.size.w - this.line_width * 0.5, this.size.h * 0.58);
         if (options.battery.show_value) {
-            let t = draw.text(options.battery.percentage).fill('#555555');
-            t.attr('letter-spacing', '-0.05em');
-            t.font({
-                family: 'Helvetica, Arial, san-serif',
-                size: this.fontsize * 0.5,
-                leading: '1em',
-                anchor: 'middle',
-                style: 'normal',
-                weight: '600',
-            })
-            t.move(this.size.w / 2 - t.length() / 2, this.line_width * 2.2)
+            this.text(options.battery.percentage, this.size.w / 2, this.size.h * 0.68,
+                { color: '#777777' }
+            );
         }
     }
-
     createSVGCalendar(dom_key, options = {}) {
         let text = options.calendar.text;
 
         // そのままだと追加してしまうので、対象domの中身は一回クリア
         document.querySelector(`${dom_key}`).innerHTML = '';
 
-        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h)
-        //draw.rect(this.size.w, this.size.h).fill('none').stroke({ color: 'red' })
-        var rect = draw.rect(this.size.w - this.line_width, this.size.h - this.line_width - this.line_width * 0.5).fill('none').stroke({
-            color: `${this.color}`, width: this.line_width, linecap: 'round'
-        }).move(this.line_width * 0.5, this.line_width * 1.0).radius(this.line_width, this.line_width)
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
 
-        var rect = draw.rect(this.size.w - this.line_width, this.line_width * 1.5).fill('none').stroke({
-            color: `${this.color}`, width: this.line_width, linecap: 'round'
-        }).move(this.line_width * 0.5, this.line_width * 1.0).radius(this.line_width, this.line_width)
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
 
-        var line = draw.line(
-            this.size.w * 0.25,
+        this.rect(
+            this.line_width * 0.5, this.line_width * 1.0,
+            this.size.w - this.line_width, this.size.h - this.line_width * 1.5
+        );
+
+        this.rect(
+            this.line_width * 0.5, this.line_width * 1.0,
+            this.size.w - this.line_width, this.line_width * 1.5
+        );
+
+        this.line(this.size.w * 0.25,
             this.line_width * 1.0,
             this.size.w * 0.25,
-            this.line_width * 0.5)
-        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
-
-        var line = draw.line(
-            this.size.w * 0.75,
+            this.line_width * 0.5);
+        this.line(this.size.w * 0.75,
             this.line_width * 1.0,
             this.size.w * 0.75,
-            this.line_width * 0.5)
-        line.stroke({ color: `${this.color}`, width: this.line_width, linecap: 'round' });
+            this.line_width * 0.5);
 
-
-        let t = draw.text(text);
-        t.attr('letter-spacing', '-0.05em');
-        t.font({
-            family: 'Helvetica, Arial, san-serif',
-            size: this.fontsize * 0.6,
-            leading: '1em',
-            anchor: 'middle',
-            style: 'normal',
-            weight: '600',
-        })
-        t.move(this.size.w / 2 - t.length() / 2, this.line_width * 2.5)
-        //t.move(this.size.w * 0.23, this.size.h * 0.32);
-
+        this.text(text, this.size.w / 2, this.size.h * 0.78)
     }
 
     createSVGBadge(dom_key, options = {}) {
 
         // そのままだと追加してしまうので、対象domの中身は一回クリア
         document.querySelector(`${dom_key}`).innerHTML = '';
-        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h)
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
 
-        //draw.rect(this.size.w, this.size.h).fill('none').stroke({ color: 'red' })
-        var rect = draw.rect(this.size.w - this.line_width * 2.0, 0.6 * this.size.h).fill('none').stroke({
-            color: `${this.color}`, width: this.line_width, linecap: 'round'
-        }).move(this.line_width, this.size.h * 0.25).radius(this.line_width, this.line_width)
-
-        let t = draw.text(options.badge.text).fill(this.color);
-        t.attr('letter-spacing', '-0.05em');
-        t.font({
-            family: 'Helvetica, Arial, san-serif',
-            size: this.fontsize * 0.4,
-            leading: '1em',
-            anchor: 'middle',
-            style: 'normal',
-            weight: '600',
-        })
-        t.move(this.size.w / 2 - t.length() / 2, this.line_width * 3.2)
-
+        this.rect(this.line_width * 0.5, this.size.h * 0.2,
+            this.size.w - this.line_width * 1.0, 0.6 * this.size.h);
+        this.text(options.badge.text, this.size.w / 2, this.size.h * 0.68);
     }
 
     createSVGCircle(dom_key, options = {}) {
 
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
+        this.ellipse(
+            this.size.w / 2, this.size.h / 2,
+            (this.size.w - this.line_width) / 2, (this.size.h - this.line_width) / 2
+        );
+        this.text(options.circle.text, this.size.w / 2, this.size.h * 0.68)
+    }
+    createSVGArrow(dom_key, options = {}) {
+
+        let angle = -1 * parseFloat(options.arrow.angle);
+        let r = this.size.w * 0.5 - this.line_width * 2;
+        let l = r; // length of arrow 
         // そのままだと追加してしまうので、対象domの中身は一回クリア
         document.querySelector(`${dom_key}`).innerHTML = '';
-        var draw = SVG().addTo(dom_key).size(this.size.w, this.size.h)
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
 
-        //        draw.rect(this.size.w, this.size.h).fill('none').stroke({ color: 'red' })
-        draw.ellipse(this.size.w - this.line_width, this.size.h - this.line_width)
-            .fill('none')
-            .stroke({
-                color: `${this.color}`, width: this.line_width
-            })
-            .move(this.line_width / 2, this.line_width / 2);
-        let t = draw.text(options.badge.text).fill(this.color);
-        t.attr('letter-spacing', '-0.05em');
-        t.font({
-            family: 'Helvetica, Arial, san-serif',
-            size: this.fontsize * 0.5,
-            leading: '1em',
-            anchor: 'middle',
-            style: 'normal',
-            weight: '600',
-        })
-        t.move(this.size.w / 2 - t.length() / 2, this.line_width * 2.2)
+        if (options.arrow.type == 'normal') {
+            this.line(this.size.w / 2, this.size.h / 2,
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)))
 
+            this.line(this.size.w / 2, this.size.h / 2,
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) * -1,
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) * -1)
+
+            this.line(
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)),
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) - l * Math.cos(this.d2r(45 + angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) - l * Math.sin(this.d2r(45 + angle))
+            )
+            this.line(
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)),
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) - l * Math.cos(this.d2r(-45 + angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) - l * Math.sin(this.d2r(-45 + angle))
+            )
+        }
+        else if (options.arrow.type == 'chevron') {
+            r *= 0.5;
+            this.line(
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)),
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) - l * Math.cos(this.d2r(45 + angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) - l * Math.sin(this.d2r(45 + angle))
+            );
+            this.line(
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)),
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) - l * Math.cos(this.d2r(-45 + angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) - l * Math.sin(this.d2r(-45 + angle)));
+        }
+
+
+        if (options.arrow.surround == 'none') {
+
+        }
+        else if (options.arrow.surround == 'circle') {
+            this.ellipse(
+                this.size.w / 2, this.size.h / 2,
+                (this.size.w - this.line_width) / 2, (this.size.h - this.line_width) / 2
+            );
+        }
+        else if (options.arrow.surround == 'square') {
+            this.rect(
+                this.line_width * 0.5, this.line_width * 0.5,
+                this.size.w - this.line_width, this.size.h - this.line_width
+            );
+        }
+    }
+
+    /**
+     * 
+     * @param {int} degrees convert degrees to radians
+     * @returns 
+     */
+    d2r(degrees) {
+        var pi = Math.PI;
+        return degrees * (pi / 180);
+    }
+
+    /**
+     * 
+     * @param {float} x LEFT point to draw
+     * @param {float} y TOP point to draw
+     * @param {float} w Width of the rectangle
+     * @param {float} h Height of the rectangle
+     * @param {object} options stroke_width, stroke, fill, rx, ry
+     */
+    rect(x, y, w, h,
+        options = {
+            stroke_width: this.line_width, stroke: this.color,
+            fill: "transparent",
+            rx: this.line_width, ry: this.line_width
+        }) {
+        if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
+        if (typeof options.stroke === 'undefined') options.stroke = this.color;
+        if (typeof options.fill === 'undefined') options.fill = "transparent";
+        if (typeof options.rx === 'undefined') options.rx = this.line_width;
+        if (typeof options.ry === 'undefined') options.ry = this.line_width;
+        this.svg.innerHTML += `<rect x="${x}" y = "${y}" width="${w}" height="${h}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${options.rx}" ry="${options.ry}" />`;
+    }
+    ellipse(x, y, w, h,
+        options = {
+            stroke_width: this.line_width, stroke: this.color,
+            fill: "transparent",
+        }) {
+        if (typeof options.stroke_width === 'undefined ') options.stroke_width = this.line_width;
+        if (typeof options.stroke === 'undefined ') options.stroke = this.color;
+        if (typeof options.fill === 'undefined ') options.fill = "transparent";
+
+        this.svg.innerHTML += `<ellipse cx="${x}" cy = "${y}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${w}" ry="${h}" />`;
+    }
+    line(x1, y1, x2, y2,
+        options = {
+            stroke_width: this.line_width, stroke: this.color,
+            fill: "transparent",
+            stroke_linecap: 'round'
+        }) {
+        this.svg.innerHTML += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"  stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" stroke-linecap="${options.stroke_linecap}" />`;
+    }
+    text(text, x, y,
+        options = {
+            font_family: 'Helvetica, Arial, san-serif',
+            text_anchor: 'middle',
+            font_style: 'normal',
+            font_weight: '600',
+            font_size: this.fontsize * 0.5,
+            color: this.color,
+        }
+    ) {
+        if (typeof options.font_family === 'undefined') options.font_family = 'Helvetica, Arial, san-serif';
+        if (typeof options.text_anchor === 'undefined') options.text_anchor = 'middle';
+        if (typeof options.font_style === 'undefined') options.font_style = 'normal';
+        if (typeof options.font_weight === 'undefined') options.font_weight = '600';
+        if (typeof options.font_size === 'undefined') options.font_size = this.fontsize * 0.5;
+        if (typeof options.color === 'undefined') options.color = this.color;
+
+        this.svg.innerHTML += `<text x="${x}" y="${y}" fill="${options.color}" font-family="${options.font_family}" font-style="${options.font_style}" font-weight=${options.font_weight} text-anchor="${options.text_anchor}" font-size="${options.font_size}">${text}</text>`;
     }
 
 }
 
+function addSVGElement(svg_width, svg_height, element_appended) {
+    let element = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    element.setAttribute('version', '1.1');
+    element.setAttribute('baseProfile', 'full');
+    element.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    element.setAttribute('width', `${svg_width}`);
+    element.setAttribute('height', `${svg_height}`);
+    element.setAttribute('viewbox', `0 0 ${svg_width} ${svg_height}`)
+    element_appended.appendChild(element);
+    return element;
+}
 
-function loadPiconTags() {
-    let elements = document.querySelectorAll('i[data-pc-id]');
+
+function loadPiconTags(dom_picon) {
+
+    let elements = [];
+    if (dom_picon) {
+        elements = [dom_picon];
+    }
+    else {
+        elements = document.querySelectorAll('i[data-pc-id]');
+    }
     //for (let e of elements = elements.querySelectorAll('[data-pc]');
-
     // piconタグを見つけた場合は該当箇所にsvgアイコンを挿入
     if (elements.length > 0) {
         let id_count = 0;
         for (let e of elements) {
             const name = e.getAttribute('data-pc-id')
             const fontsize = window.getComputedStyle(e).getPropertyValue('font-size');
-            e.id = `picon_${id_count}`;
+            if (dom_picon) e.id = dom_picon.id;
+            else e.id = `picon_${id_count}`;
             if (name == 'clock') {
                 let hour, minute;
                 if ((hour = e.getAttribute('data-pc-hour')) == null) { hour = 10 }
@@ -309,14 +415,35 @@ function loadPiconTags() {
                 let text;
                 if ((text = e.getAttribute('data-pc-text')) == null) { text = picon_defaults.circle.text }
                 new picon(`#${e.id}`, name, {
-                    badge: {
+                    circle: {
                         text: text,
+                    }
+                });
+            }
+            else if (name == 'arrow') {
+                let angle;
+                let type;
+                let surround
+                if ((angle = e.getAttribute('data-pc-angle')) == null) { angle = picon_defaults.arrow.angle }
+                if ((type = e.getAttribute('data-pc-type')) == null) { type = picon_defaults.arrow.type }
+                if ((surround = e.getAttribute('data-pc-surround')) == null) { surround = picon_defaults.arrow.surround }
+                // if (e.hasAttribute('data-pc-surround')) surround = e.getAttribute('data-pc-surround');
+                // else surround = picon_defaults.arrow.surround;
+                new picon(`#${e.id}`, name, {
+                    arrow: {
+                        angle: angle,
+                        type: type,
+                        surround: surround
                     }
                 });
             }
 
             id_count++;
         }
+
+
+
+
     }
 }
 loadPiconTags();

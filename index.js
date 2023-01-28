@@ -1,5 +1,8 @@
 window.addEventListener('DOMContentLoaded', function () {
-
+    let elements = document.querySelectorAll('input');
+    for (let e of elements) {
+        updateInput(e);
+    }
 })
 
 function updateInput(dom) {
@@ -8,7 +11,7 @@ function updateInput(dom) {
     let placeholder = document.querySelector(`#${name}_placeholder`);
     let picon = placeholder.querySelector('i');
     picon.setAttribute(`data-pc-${parameter}`, dom.value);
-    loadPiconTags();
+    loadPiconTags(picon);
 
     let picon_clone = picon.cloneNode();
     picon_clone.removeAttribute('id');
@@ -17,8 +20,5 @@ function updateInput(dom) {
     str = str.replace('=""', '');
     str += '</i>';
     document.querySelector(`#${name}_code`).innerText = str;
-
     document.querySelector(`#${name}_svg`).innerText = picon.innerHTML;
-    console.log(picon.innerText);
-
 }

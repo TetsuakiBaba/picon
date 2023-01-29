@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', function () {
     let elements = document.querySelectorAll('input');
     for (let e of elements) {
+        console.log(e);
         updateInput(e);
     }
 })

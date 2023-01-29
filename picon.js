@@ -4,26 +4,32 @@
  */
 picon_defaults = {
     clock: {
-        hour: 10,
-        minute: 10,
+        hour: 19,
+        minute: 0,
     },
     battery: {
-        percentage: 80,
+        percentage: 86,
         show_value: false,
     },
     calendar: {
-        text: '25',
+        text: '26',
     },
     badge: {
         text: 'XR',
     },
     circle: {
-        text: '神'
+        text: '魔'
     },
     arrow: {
-        angle: 0,
+        angle: 153,
         surround: 'none',
         type: 'normal',
+    },
+    filetype: {
+        text: 'SVG',
+    },
+    volume: {
+        value: 89,
     }
 }
 class picon {
@@ -82,6 +88,18 @@ class picon {
             }
             this.createSVGArrow(dom_key, options);
         }
+        else if (name === 'filetype') {
+            if (typeof options.filetype != 'undefined') {
+                if (typeof options.filetype.text === 'undefined') options.filetype.text = picon_defaults.filetype.text;
+            }
+            this.createSVGFiletype(dom_key, options);
+        }
+        else if (name === 'volume') {
+            if (typeof options.volume != 'undefined') {
+                if (typeof options.volume.value === 'undefined') options.volume.value = picon_defaults.volume.value;
+            }
+            this.createSVGVolume(dom_key, options);
+        }
     }
 
     createSVGClock(dom_key, options = {}) {
@@ -137,6 +155,7 @@ class picon {
         // +
         this.line(this.size.w - this.line_width * 0.5, this.size.h * 0.42,
             this.size.w - this.line_width * 0.5, this.size.h * 0.58);
+        //console.log(options.battery.show_value);
         if (options.battery.show_value) {
             this.text(options.battery.percentage, this.size.w / 2, this.size.h * 0.68,
                 { color: '#777777' }
@@ -267,6 +286,108 @@ class picon {
         }
     }
 
+    createSVGFiletype(dom_key, options = {}) {
+
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        // debug red frame
+        // this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
+
+        this.path(
+            `
+            M ${this.size.w / 8},${this.line_width * 2.0} 
+            L ${this.size.w / 8},${this.size.h - this.line_width * 2.0} 
+            Q ${this.size.w / 8},${this.size.h - this.line_width * 0.5},
+              ${this.size.w / 8 + this.line_width * 2.0},${this.size.h - this.line_width * 0.5} 
+            L ${this.size.w * (7 / 8) - this.line_width * 2.0},${this.size.h - this.line_width * 0.5} 
+            Q ${this.size.w * (7 / 8)},${this.size.h - this.line_width * 0.5},
+              ${this.size.w * (7 / 8)},${this.size.h - this.line_width * 2.0} 
+            L ${this.size.w * (7 / 8)},${this.line_width * 4.0} 
+            L ${this.size.w * (7 / 8) - this.line_width * 4.0},${this.line_width * 0.5} 
+            L ${this.size.w / 8 + this.line_width * 1.5},${this.line_width * 0.5} 
+            Q ${this.size.w / 8},${this.line_width * 0.5},
+              ${this.size.w / 8},${this.line_width * 2.0}
+            `
+        );
+        this.path(
+            `
+            M ${this.size.w * (7 / 8)},${this.line_width * 4.0}
+            L ${this.size.w * (7 / 8) - this.line_width * 2.5},${this.line_width * 4.0}
+            Q ${this.size.w * (7 / 8) - this.line_width * 4.0},${this.line_width * 4.0}
+              ${this.size.w * (7 / 8) - this.line_width * 4.0},${this.line_width * 2.5}
+            L ${this.size.w * (7 / 8) - this.line_width * 4.0},${this.line_width * 0.5}
+            `,
+            { fill: this.color }
+        )
+        this.text(options.filetype.text, this.size.w / 2, this.size.h * 0.6,
+            {
+                font_size: this.fontsize * 0.2
+            }
+        )
+    }
+
+    createSVGVolume(dom_key, options = {}) {
+
+        console.log(options);
+        let volume = parseInt(options.volume.value);
+        if (volume > 99) volume = 99;
+        if (volume < 0) volume = 0;
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
+
+        // horn
+        this.path(
+            `
+            M ${this.line_width * 0.5}, ${this.size.h * (6 / 16) + this.line_width} 
+            L ${this.line_width * 0.5}, ${this.size.h * (10 / 16) - this.line_width} 
+            Q ${this.line_width * 0.5}, ${this.size.h * (10 / 16)},
+              ${this.line_width * 1.5}, ${this.size.h * (10 / 16)} 
+            L ${this.size.w * 0.25}, ${this.size.h * (10 / 16)}
+            Q ${this.size.w * 0.45}, ${this.size.h * (13 / 16)},
+              ${this.size.w * 0.45}, ${this.size.h * (12 / 16)}
+            L ${this.size.w * 0.45}, ${this.size.h * (4 / 16)}
+            Q ${this.size.w * 0.45}, ${this.size.h * (3 / 16)},
+              ${this.size.w * 0.25}, ${this.size.h * (6 / 16)}
+            L ${this.line_width * 1.0}, ${this.size.h * (6 / 16)}
+            Q ${this.line_width * 0.5}, ${this.size.h * (6 / 16)},
+              ${this.line_width * 0.5}, ${this.size.h * (6 / 16) + this.line_width}
+            `
+        );
+
+        // show mute mark
+        if (volume <= 0) {
+            this.line(
+                this.size.w * 0.65, this.size.h * (6 / 16),
+                this.size.w * 0.90, this.size.h * (10 / 16)
+            );
+            this.line(
+                this.size.w * 0.65, this.size.h * (10 / 16),
+                this.size.w * 0.90, this.size.h * (6 / 16)
+            );
+        }
+
+
+        // volume 
+        for (let step = 0; step < volume / 33; step++) {
+            let sv = volume % 33;
+            if (step == parseInt(volume / 33)) {
+                this.arc(this.size.w * 0.4, this.size.h / 2, this.size.w * (0.25 + 0.15 * step),
+                    45 * sv / 33, -45 * sv / 33);
+            }
+            else {
+                this.arc(this.size.w * 0.4, this.size.h / 2, this.size.w * (0.25 + 0.15 * step),
+                    45, -45);
+            }
+
+            //            this.arc(this.size.w * 0.4, this.size.h / 2, this.size.w * 0.4, 45, -45);
+            //this.arc(this.size.w * 0.4, this.size.h / 2, this.size.w * 0.55, 45, -45);
+        }
+    }
+
+
+
     /**
      * 
      * @param {int} degrees convert degrees to radians
@@ -303,9 +424,9 @@ class picon {
             stroke_width: this.line_width, stroke: this.color,
             fill: "transparent",
         }) {
-        if (typeof options.stroke_width === 'undefined ') options.stroke_width = this.line_width;
-        if (typeof options.stroke === 'undefined ') options.stroke = this.color;
-        if (typeof options.fill === 'undefined ') options.fill = "transparent";
+        if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
+        if (typeof options.stroke === 'undefined') options.stroke = this.color;
+        if (typeof options.fill === 'undefined') options.fill = "transparent";
 
         this.svg.innerHTML += `<ellipse cx="${x}" cy = "${y}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${w}" ry="${h}" />`;
     }
@@ -335,6 +456,52 @@ class picon {
         if (typeof options.color === 'undefined') options.color = this.color;
 
         this.svg.innerHTML += `<text x="${x}" y="${y}" fill="${options.color}" font-family="${options.font_family}" font-style="${options.font_style}" font-weight=${options.font_weight} text-anchor="${options.text_anchor}" font-size="${options.font_size}" alignment-baseline="bottom">${text}</text>`;
+    }
+    polygon(str_points,
+        options = {
+            stroke_width: this.line_width, stroke: this.color,
+            fill: "transparent",
+        }) {
+        if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
+        if (typeof options.stroke === 'undefined') options.stroke = this.color;
+        if (typeof options.fill === 'undefined') options.fill = "transparent";
+
+        this.svg.innerHTML += `<polygon points="${str_points}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
+    }
+    path(str_path,
+        options = {
+            stroke_width: this.line_width,
+            stroke: this.color,
+            fill: "transparent",
+        }) {
+        if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
+        if (typeof options.stroke === 'undefined') options.stroke = this.color;
+        if (typeof options.fill === 'undefined') options.fill = "transparent";
+
+        //str_path = str_path.replace(/ /g, '');
+        str_path = str_path.replace(/\n/g, '');
+
+        this.svg.innerHTML += `<path d="${str_path}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
+    }
+    arc(cx, cy, r, start, stop,
+        options = {
+            stroke_width: this.line_width,
+            stroke: this.color,
+            fill: "transparent",
+        }
+    ) {
+        if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
+        if (typeof options.stroke === 'undefined') options.stroke = this.color;
+        if (typeof options.fill === 'undefined') options.fill = "transparent";
+        let x1 = cx + r * Math.cos(this.d2r(start));
+        let y1 = cy + r * Math.sin(this.d2r(start));
+        let x2 = parseInt(cx + r * Math.cos(this.d2r(stop)));
+        let y2 = cy + r * Math.sin(this.d2r(stop));
+        let dx = x2 - x1;
+        let dy = y2 - y1;
+        let str_path = `M ${x1} ${y1} A ${r} ${r} 0 0 0 ${x2} ${y2}`;
+
+        this.svg.innerHTML += `<path d="${str_path}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
     }
 
 }
@@ -386,7 +553,14 @@ function loadPiconTags(dom_picon) {
                 let percentage;
                 let show_value;
                 if ((percentage = e.getAttribute('data-pc-percentage')) == null) { percentage = 80 }
-                if ((show_value = Boolean(e.getAttribute('data-pc-show-value'))) == null) { show_value = picon_defaults.battery.show_value }
+                if (e.hasAttribute('data-pc-show-value')) {
+                    let v = String(e.getAttribute('data-pc-show-value'));
+                    show_value = JSON.parse(v.toLowerCase());
+                }
+                else {
+                    show_value = picon_defaults.battery.show_value
+                }
+
                 new picon(`#${e.id}`, name, {
                     battery: {
                         percentage: percentage,
@@ -435,6 +609,24 @@ function loadPiconTags(dom_picon) {
                         angle: angle,
                         type: type,
                         surround: surround
+                    }
+                });
+            }
+            else if (name == 'filetype') {
+                let text;
+                if ((text = e.getAttribute('data-pc-text')) == null) { text = picon_defaults.filetype.text }
+                new picon(`#${e.id}`, name, {
+                    filetype: {
+                        text: text,
+                    }
+                });
+            }
+            else if (name == 'volume') {
+                let value;
+                if ((value = e.getAttribute('data-pc-value')) == null) { text = picon_defaults.volume.value }
+                new picon(`#${e.id}`, name, {
+                    volume: {
+                        value: value,
                     }
                 });
             }

@@ -32,7 +32,7 @@
         <h1 class="display-5 mt-4">icons</h1>
         <div class="row">
             <!-- clock -->
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">clock</h6>
@@ -45,14 +45,14 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="number" data-pc-parameter="hour" class="form-control"
-                                        data-pc-target-name='clock' value="10" onchange="updateInput(this);">
+                                        data-pc-target-name='clock' value="19" onchange="updateInput(this);">
                                     <label>data-pc-hour</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="number" data-pc-target-name="clock" data-pc-parameter="minute"
-                                        class="form-control" value="10" onchange="updateInput(this);">
+                                        class="form-control" value="0" onchange="updateInput(this);">
                                     <label>data-pc-minute</label>
                                 </div>
                             </div>
@@ -81,22 +81,19 @@
                 </div>
             </div>
             <!-- battery -->
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">battery</h6>
                         <div id="battery_placeholder" class="text-center" style="font-size:5em;">
                             <i data-pc-id="battery" data-pc-percentage="80"></i>
                         </div>
-
-
-
                         parameters
                         <div class="row g-1">
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="number" data-pc-parameter="percentage" class="form-control"
-                                        data-pc-target-name='battery' value="80" onchange="updateInput(this);">
+                                        data-pc-target-name='battery' value="86" onchange="updateInput(this);">
                                     <label>data-pc-percentage</label>
                                 </div>
                             </div>
@@ -134,12 +131,12 @@
                 </div>
             </div>
             <!-- calendar -->
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">calendar</h6>
                         <div id="calendar_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="calendar" data-pc-text="25"></i>
+                            <i data-pc-id="calendar" data-pc-text="26"></i>
                         </div>
 
                         parameters
@@ -147,7 +144,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" data-pc-parameter="text" class="form-control"
-                                        data-pc-target-name='calendar' value="25" onchange="updateInput(this);">
+                                        data-pc-target-name='calendar' value="26" onchange="updateInput(this);">
                                     <label>data-pc-text</label>
                                 </div>
                             </div>
@@ -176,12 +173,12 @@
                 </div>
             </div>
             <!-- badge -->
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">badge</h6>
                         <div id="badge_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="badge" data-pc-text="XR"></i>
+                            <i data-pc-id="badge" data-pc-text="GT"></i>
                         </div>
 
 
@@ -190,7 +187,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" data-pc-parameter="text" class="form-control"
-                                        data-pc-target-name='badge' value="XR" onchange="updateInput(this);">
+                                        data-pc-target-name='badge' value="RR" onchange="updateInput(this);">
                                     <label>data-pc-text</label>
                                 </div>
                             </div>
@@ -229,7 +226,7 @@
                 </div>
             </div>
             <!-- circle -->
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">circle</h6>
@@ -264,7 +261,7 @@
                 </div>
             </div>
             <!-- arrow -->
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h6 class="card-subtitle text-muted">arrow</h6>
@@ -276,7 +273,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="number" data-pc-parameter="angle" class="form-control"
-                                        data-pc-target-name='arrow' value="0" onchange="updateInput(this);">
+                                        data-pc-target-name='arrow' value="153" onchange="updateInput(this);">
                                     <label>data-pc-angle</label>
                                 </div>
                             </div>
@@ -319,18 +316,71 @@
             </div>
 
             <!-- filetype -->
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-subtitle text-muted">filetype(TBA)</h6>
+                        <h6 class="card-subtitle text-muted">filetype</h6>
+                        <div id="filetype_placeholder" class="text-center" style="font-size:5em;">
+                            <i data-pc-id="filetype" data-pc-text="dbz"></i>
+                        </div>
+
+                        parameters
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" data-pc-parameter="text" class="form-control"
+                                        data-pc-target-name='filetype' value="dbz" onchange="updateInput(this);">
+                                    <label>data-pc-text</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <h5 class="mt-4 card-title">tag</h5> -->
+                        <p class="border card-text small p-2 mt-4 mb-0" id="filetype_code"> </p>
+                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#filetype_code">copy</button>
+                        </div>
+                        <p class="border p-2 m-0" style="font-size:0.5em" id="filetype_svg"></p>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#filetype_svg">copy</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- speaker -->
-            <div class="col-md-6 col-lg-4 mb-4">
+            <!-- volume -->
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="card-subtitle text-muted">speedometer(TBA)</h6>
+                        <h6 class="card-subtitle text-muted">volume</h6>
+                        <div id="volume_placeholder" class="text-center" style="font-size:5em;">
+                            <i data-pc-id="volume" data-pc-value="89"></i>
+                        </div>
+
+                        parameters
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" data-pc-parameter="value" min='0' max='100'
+                                        class="form-control" data-pc-target-name='volume' value="89"
+                                        onchange="updateInput(this);">
+                                    <label>data-pc-value</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <h5 class="mt-4 card-title">tag</h5> -->
+                        <p class="border card-text small p-2 mt-4 mb-0" id="volume_code"> </p>
+                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#volume_code">copy</button>
+                        </div>
+                        <p class="border p-2 m-0" style="font-size:0.5em" id="volume_svg"></p>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#volume_svg">copy</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -452,6 +502,19 @@
                     <th scope="row">arrow</th>
                     <td>
                         angle(degrees), type(normal, cheveron), surround(none, circle, square)
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">filetype</th>
+                    <td>
+                        text
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">volume</th>
+                    <td>
+                        value(0-100)
                     </td>
                 </tr>
             </tbody>

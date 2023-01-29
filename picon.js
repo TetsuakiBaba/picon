@@ -34,7 +34,7 @@ class picon {
         this.size = {}
         this.size.w = this.fontsize;
         this.size.h = this.fontsize;
-        this.line_width = this.fontsize * 0.1;
+        this.line_width = this.fontsize * 0.06;
 
         if (name === 'clock') {
             // optionが全く定義されていない
@@ -204,7 +204,7 @@ class picon {
     createSVGArrow(dom_key, options = {}) {
 
         let angle = -1 * parseFloat(options.arrow.angle);
-        let r = this.size.w * 0.5 - this.line_width * 2;
+        let r = this.size.w * 0.5 - this.line_width * 2.5;
         let l = r; // length of arrow 
         // そのままだと追加してしまうので、対象domの中身は一回クリア
         document.querySelector(`${dom_key}`).innerHTML = '';
@@ -334,7 +334,7 @@ class picon {
         if (typeof options.font_size === 'undefined') options.font_size = this.fontsize * 0.5;
         if (typeof options.color === 'undefined') options.color = this.color;
 
-        this.svg.innerHTML += `<text x="${x}" y="${y}" fill="${options.color}" font-family="${options.font_family}" font-style="${options.font_style}" font-weight=${options.font_weight} text-anchor="${options.text_anchor}" font-size="${options.font_size}">${text}</text>`;
+        this.svg.innerHTML += `<text x="${x}" y="${y}" fill="${options.color}" font-family="${options.font_family}" font-style="${options.font_style}" font-weight=${options.font_weight} text-anchor="${options.text_anchor}" font-size="${options.font_size}" alignment-baseline="baseline">${text}</text>`;
     }
 
 }
@@ -347,6 +347,7 @@ function addSVGElement(svg_width, svg_height, element_appended) {
     element.setAttribute('width', `${svg_width}`);
     element.setAttribute('height', `${svg_height}`);
     element.setAttribute('viewbox', `0 0 ${svg_width} ${svg_height}`)
+    element.style.verticalAlign = '-0.15em'; //svgキャンバスとテキストのズレ調整
     element_appended.appendChild(element);
     return element;
 }

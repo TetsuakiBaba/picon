@@ -138,7 +138,7 @@ class picon {
         this.line(this.size.w - this.line_width * 0.5, this.size.h * 0.42,
             this.size.w - this.line_width * 0.5, this.size.h * 0.58);
         if (options.battery.show_value) {
-            this.text(options.battery.percentage, this.size.w / 2, this.size.h * 0.55,
+            this.text(options.battery.percentage, this.size.w / 2, this.size.h * 0.68,
                 { color: '#777777' }
             );
         }
@@ -173,7 +173,7 @@ class picon {
             this.size.w * 0.75,
             this.line_width * 0.5);
 
-        this.text(text, this.size.w / 2, this.size.h * 0.6)
+        this.text(text, this.size.w / 2, this.size.h * 0.70)
     }
 
     createSVGBadge(dom_key, options = {}) {
@@ -186,7 +186,7 @@ class picon {
 
         this.rect(this.line_width * 0.5, this.size.h * 0.2,
             this.size.w - this.line_width * 1.0, 0.6 * this.size.h);
-        this.text(options.badge.text, this.size.w / 2, this.size.h * 0.55);
+        this.text(options.badge.text, this.size.w / 2, this.size.h * 0.68);
     }
 
     createSVGCircle(dom_key, options = {}) {
@@ -199,7 +199,7 @@ class picon {
             this.size.w / 2, this.size.h / 2,
             (this.size.w - this.line_width) / 2, (this.size.h - this.line_width) / 2
         );
-        this.text(options.circle.text, this.size.w / 2, this.size.h * 0.55)
+        this.text(options.circle.text, this.size.w / 2, this.size.h * 0.68)
     }
     createSVGArrow(dom_key, options = {}) {
 
@@ -319,7 +319,7 @@ class picon {
     }
     text(text, x, y,
         options = {
-            font_family: 'Helvetica, Arial, san-serif',
+            font_family: 'Helvetica, Arial, sans-serif',
             text_anchor: 'middle',
             font_style: 'normal',
             font_weight: '600',
@@ -334,7 +334,7 @@ class picon {
         if (typeof options.font_size === 'undefined') options.font_size = this.fontsize * 0.5;
         if (typeof options.color === 'undefined') options.color = this.color;
 
-        this.svg.innerHTML += `<text x="${x}" y="${y}" fill="${options.color}" font-family="${options.font_family}" font-style="${options.font_style}" font-weight=${options.font_weight} text-anchor="${options.text_anchor}" font-size="${options.font_size}" alignment-baseline="middle">${text}</text>`;
+        this.svg.innerHTML += `<text x="${x}" y="${y}" fill="${options.color}" font-family="${options.font_family}" font-style="${options.font_style}" font-weight=${options.font_weight} text-anchor="${options.text_anchor}" font-size="${options.font_size}" alignment-baseline="bottom">${text}</text>`;
     }
 
 }

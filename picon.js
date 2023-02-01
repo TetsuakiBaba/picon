@@ -15,7 +15,7 @@ picon_defaults = {
         text: '26',
     },
     badge: {
-        text: 'XR',
+        text: 'RR',
     },
     circle: {
         text: 'Z'
@@ -26,15 +26,20 @@ picon_defaults = {
         type: 'normal',
     },
     filetype: {
-        text: 'SVG',
+        text: 'DBZ',
     },
     volume: {
-        value: 89,
+        value: 100,
     },
     chat: {
-        angle: 51,
-        text: '...'
+        angle: -51,
+        text: 'ZZ..'
+    },
+    person: {
+        size: 84,
+        text: 'Smith'
     }
+
 }
 class picon {
     constructor(dom_key, name, options = {}) {
@@ -112,6 +117,13 @@ class picon {
             }
             this.createSVGChat(dom_key, options);
         }
+        else if (name === 'person') {
+            if (typeof options.person != 'undefined') {
+                if (typeof options.person.text === 'undefined') options.person.text = picon_defaults.person.text;
+                if (typeof options.person.size === 'undefined') options.person.size = picon_defaults.person.size;
+            }
+            this.createSVGPerson(dom_key, options);
+        }
     }
 
     createSVGClock(dom_key, options = {}) {
@@ -172,6 +184,7 @@ class picon {
                 { color: '#777777' }
             );
         }
+        console.log(options.battery);
     }
     createSVGCalendar(dom_key, options = {}) {
         let text = options.calendar.text;
@@ -418,6 +431,41 @@ class picon {
         this.text(options.chat.text, `${this.size.w / 2}`, `${this.size.h * 0.61}`,
             { font_size: this.fontsize * 0.3 })
     }
+    createSVGPerson(dom_key, options = {}) {
+        if (options.person.size <= 0) options.person.size = 1;
+        if (options.person.size >= 120) options.person.size = 120;
+
+        let size = parseInt(options.person.size) / 100;
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        // debug red frame
+        this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
+
+        this.ellipse(
+            this.size.w * (8 / 16), this.size.h * (6 / 16),
+            this.size.w * 0.22, this.size.h * 0.22,
+            {
+                transform: `scale(${size})`,
+                transform_origin: 'bottom'
+            }
+        )
+        this.path(`
+                M ${this.size.w / 2}, ${this.size.h - this.line_width * 0.5}
+                L ${this.line_width * 0.5}, ${this.size.h - this.line_width * 0.5}
+                Q ${this.line_width * 0.5}, ${this.size.h * (11 / 16)},
+                  ${this.size.w / 2}, ${this.size.h * (11 / 16)}
+                Q ${this.size.w - this.line_width * 0.5}, ${this.size.h * (11 / 16)},
+                  ${this.size.w - this.line_width * 0.5}, ${this.size.h - this.line_width * 0.5}
+                L ${this.size.w / 2}, ${this.size.h - this.line_width * 0.5}
+                `,
+            {
+                transform: `scale(${size})`,
+                transform_origin: 'bottom'
+            }
+        );
+        this.text(options.person.text, this.size.w / 2, this.fontsize * 0.2,
+            { font_size: this.fontsize * 0.2 });
+    }
 
 
 
@@ -482,10 +530,12 @@ class picon {
         if (typeof options.stroke === 'undefined') options.stroke = this.color;
         if (typeof options.fill === 'undefined') options.fill = "transparent";
         if (typeof options.clip === 'undefined') options.clip = false;
+        if (typeof options.transform_origin === 'undefined') options.transform_origin = 'center';
+        if (typeof options.transform === 'undefined') options.transform = '';
         let str_clip_path = '';
         if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
 
-        let e = document.createElement('ellipse');
+        let e = document.createElementNS("http://www.w3.org/2000/svg", 'ellipse');
         e.setAttribute('cx', x);
         e.setAttribute('cy', y);
         e.setAttribute('rx', w);
@@ -493,12 +543,15 @@ class picon {
         e.setAttribute('stroke', options.stroke);
         e.setAttribute('fill', options.fill);
         e.setAttribute('stroke-width', options.stroke_width);
+        e.setAttribute('transform-origin', options.transform_origin);
+        e.setAttribute('transform', options.transform);
 
         if (this.is_clipping) {
             document.querySelector(`#${this.clip_id}`).appendChild(e);
         }
         else {
-            this.svg.innerHTML += `<ellipse cx="${x}" cy="${y}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${w}" ry="${h}" ${str_clip_path}/>`;
+            this.svg.appendChild(e);
+            //this.svg.innerHTML += `<ellipse cx="${x}" cy="${y}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${w}" ry="${h}" ${str_clip_path}/>`;
         }
     }
     line(x1, y1, x2, y2,
@@ -581,11 +634,15 @@ class picon {
             stroke_width: this.line_width,
             stroke: this.color,
             fill: "transparent",
+            transform_origin: 'center',
+            transform: ''
         }) {
         if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
         if (typeof options.stroke === 'undefined') options.stroke = this.color;
         if (typeof options.fill === 'undefined') options.fill = "transparent";
         if (typeof options.clip === 'undefined') options.clip = false;
+        if (typeof options.transform_origin === 'undefined') options.transform_origin = 'center';
+        if (typeof options.transform === 'undefined') options.transform = '';
         let str_clip_path = '';
         if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
 
@@ -593,15 +650,20 @@ class picon {
         //str_path = str_path.replace(/ /g, '');
         str_path = str_path.replace(/\n/g, '');
 
-        let e = document.createElement('path');
+        let e = document.createElementNS("http://www.w3.org/2000/svg", 'path');
         e.setAttribute('d', str_path);
-
+        e.setAttribute('transform-origin', options.transform_origin);
+        e.setAttribute('transform', options.transform);
+        e.setAttribute('fill', options.fill);
+        e.setAttribute('stroke', options.stroke);
+        e.setAttribute('stroke-width', options.stroke_width);
 
         if (this.is_clipping) {
             document.querySelector(`#${this.clip_id}`).appendChild(e);
         }
         else {
-            this.svg.innerHTML += `<path d="${str_path}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
+            this.svg.appendChild(e);
+            //this.svg.innerHTML += `<path d="${str_path}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
         }
     }
     /**
@@ -708,6 +770,7 @@ function loadPiconTags(dom_picon) {
     else {
         elements = document.querySelectorAll('i[data-pc-id]');
     }
+
     //for (let e of elements = elements.querySelectorAll('[data-pc]');
     // piconタグを見つけた場合は該当箇所にsvgアイコンを挿入
     if (elements.length > 0) {
@@ -718,6 +781,7 @@ function loadPiconTags(dom_picon) {
             if (dom_picon) e.id = dom_picon.id;
             else e.id = `picon_${id_count}`;
             if (name == 'clock') {
+
                 let hour, minute;
                 if ((hour = e.getAttribute('data-pc-hour')) == null) { hour = 10 }
                 if ((minute = e.getAttribute('data-pc-minute')) == null) { minute = 10 }
@@ -821,6 +885,18 @@ function loadPiconTags(dom_picon) {
                     }
                 });
             }
+            else if (name == 'person') {
+                let size;
+                let text;
+                if ((size = e.getAttribute('data-pc-size')) == null) { size = picon_defaults.person.size }
+                if ((text = e.getAttribute('data-pc-text')) == null) { text = picon_defaults.person.text }
+                new picon(`#${e.id}`, name, {
+                    person: {
+                        size: size,
+                        text: text
+                    }
+                });
+            }
 
             id_count++;
         }
@@ -830,4 +906,4 @@ function loadPiconTags(dom_picon) {
 
     }
 }
-loadPiconTags();
+//loadPiconTags();

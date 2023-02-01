@@ -1,9 +1,10 @@
 window.addEventListener('DOMContentLoaded', function () {
     let elements = document.querySelectorAll('input');
     for (let e of elements) {
-        console.log(e);
         updateInput(e);
     }
+
+
 })
 
 function updateInput(dom) {
@@ -22,4 +23,15 @@ function updateInput(dom) {
     str += '</i>';
     document.querySelector(`#${name}_code`).innerText = str;
     document.querySelector(`#${name}_svg`).innerText = picon.innerHTML;
+
+    updateMasonry();
+}
+
+function updateMasonry() {
+    var elem_picons = document.querySelector('#picons');
+    var msnry_topics = new Masonry(elem_picons, {
+        // options
+        percentPosition: true,
+        originLeft: true,
+    });
 }

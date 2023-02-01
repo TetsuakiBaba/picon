@@ -30,7 +30,7 @@
             frameborder="0" scrolling="0" width="150" height="20" title="GitHub"></iframe>
 
         <h1 class="display-5 mt-4">icons</h1>
-        <div class="row">
+        <div class="row" id="picons">
             <!-- clock -->
             <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
                 <div class="card">
@@ -240,7 +240,7 @@
                             <div class="col-md-6">
                                 <div class="form-floating">
                                     <input type="text" data-pc-parameter="text" class="form-control"
-                                        data-pc-target-name='circle' value="魔" onchange="updateInput(this);">
+                                        data-pc-target-name='circle' value="Z" onchange="updateInput(this);">
                                     <label>data-pc-text</label>
                                 </div>
                             </div>
@@ -384,6 +384,50 @@
                     </div>
                 </div>
             </div>
+
+            <!-- chat -->
+            <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-subtitle text-muted">chat</h6>
+                        <div id="chat_placeholder" class="text-center" style="font-size:5em;">
+                            <i data-pc-id="chat" data-pc-value="89"></i>
+                        </div>
+
+                        parameters
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" data-pc-parameter="angle" class="form-control"
+                                        data-pc-target-name='chat' value="-51" onchange="updateInput(this);">
+                                    <label>data-pc-angle</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" data-pc-parameter="text" class="form-control"
+                                        data-pc-target-name='chat' value="..." onchange="updateInput(this);">
+                                    <label>data-pc-text</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <h5 class=" mt-4 card-title">tag</h5> -->
+                        <p class="border card-text small p-2 mt-4 mb-0" id="chat_code"> </p>
+                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#chat_code">copy</button>
+                        </div>
+                        <p class="border p-2 m-0" style="font-size:0.5em" id="chat_svg"></p>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-secondary btn-sm" id="btn-copy"
+                                data-clipboard-target="#chat_svg">copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- persons 人数指定やグリッド表示，ランダム表示に対応-->
         </div>
         <h1 class="display-5 mt-4">Quick start</h1>
         <div class="highlight">
@@ -424,7 +468,8 @@
         </div>
 
         <h1 class="display-5 mt-4">Size and color</h1>
-        <p>Picon itself has no methods to set color or size. Use css to specify size and color. A simple example is
+        <p>Picon itself has no methods to set color or size. Use css to specify size and color. A simple
+            example is
             shown below.</p>
         <div class="row">
             <div class="col-6">
@@ -579,6 +624,8 @@
 
         </script>
 
+
+        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
 </body>
 

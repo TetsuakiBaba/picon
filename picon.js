@@ -18,7 +18,7 @@ picon_defaults = {
         text: 'XR',
     },
     circle: {
-        text: '魔'
+        text: 'Z'
     },
     arrow: {
         angle: 153,
@@ -30,6 +30,10 @@ picon_defaults = {
     },
     volume: {
         value: 89,
+    },
+    chat: {
+        angle: 51,
+        text: '...'
     }
 }
 class picon {
@@ -41,7 +45,8 @@ class picon {
         this.size.w = this.fontsize;
         this.size.h = this.fontsize;
         this.line_width = this.fontsize * 0.06;
-
+        this.name = name;
+        this.is_clipping = false;
         if (name === 'clock') {
             // optionが全く定義されていない
             if (typeof options.clock === 'undefined') {
@@ -100,6 +105,13 @@ class picon {
             }
             this.createSVGVolume(dom_key, options);
         }
+        else if (name === 'chat') {
+            if (typeof options.chat != 'undefined') {
+                if (typeof options.chat.angle === 'undefined') options.chat.angle = picon_defaults.chat.angle;
+                if (typeof options.chat.text === 'undefined') options.chat.text = picon_defaults.chat.text;
+            }
+            this.createSVGChat(dom_key, options);
+        }
     }
 
     createSVGClock(dom_key, options = {}) {
@@ -155,7 +167,6 @@ class picon {
         // +
         this.line(this.size.w - this.line_width * 0.5, this.size.h * 0.42,
             this.size.w - this.line_width * 0.5, this.size.h * 0.58);
-        //console.log(options.battery.show_value);
         if (options.battery.show_value) {
             this.text(options.battery.percentage, this.size.w / 2, this.size.h * 0.68,
                 { color: '#777777' }
@@ -327,8 +338,6 @@ class picon {
     }
 
     createSVGVolume(dom_key, options = {}) {
-
-        console.log(options);
         let volume = parseInt(options.volume.value);
         if (volume > 99) volume = 99;
         if (volume < 0) volume = 0;
@@ -380,10 +389,34 @@ class picon {
                 this.arc(this.size.w * 0.4, this.size.h / 2, this.size.w * (0.25 + 0.15 * step),
                     45, -45);
             }
-
-            //            this.arc(this.size.w * 0.4, this.size.h / 2, this.size.w * 0.4, 45, -45);
-            //this.arc(this.size.w * 0.4, this.size.h / 2, this.size.w * 0.55, 45, -45);
         }
+    }
+
+    createSVGChat(dom_key, options = {}) {
+        let angle = -1 * parseInt(options.chat.angle);
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+
+        let r = 0.8 * this.size.w / 2 - this.line_width * 0.5;
+
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
+        let str = this.arc(this.size.w / 2, this.size.h / 2, r, 10, -10, { large: 1, draw: false }).getD();
+        str += ` L ${this.size.w - this.line_width * 0.5}, ${this.size.h / 2} Z`
+        let e = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+
+        e.setAttribute('d', str);
+        e.setAttribute('fill', 'transparent');
+        e.setAttribute('stroke', `${this.color}`);
+        e.setAttribute('stroke-width', `${this.line_width}`);
+        e.setAttribute('cx', `${this.size.w / 2}`)
+        e.setAttribute('cy', `${this.size.h / 2}`)
+        e.setAttribute('transform-origin', `center`)
+        e.setAttribute('transform', `rotate(${angle})`)
+        this.svg.appendChild(e);
+
+        this.text(options.chat.text, `${this.size.w / 2}`, `${this.size.h * 0.61}`,
+            { font_size: this.fontsize * 0.3 })
     }
 
 
@@ -410,14 +443,35 @@ class picon {
         options = {
             stroke_width: this.line_width, stroke: this.color,
             fill: "transparent",
-            rx: this.line_width, ry: this.line_width
+            rx: this.line_width, ry: this.line_width,
+            clip: false
         }) {
         if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
         if (typeof options.stroke === 'undefined') options.stroke = this.color;
         if (typeof options.fill === 'undefined') options.fill = "transparent";
         if (typeof options.rx === 'undefined') options.rx = this.line_width;
         if (typeof options.ry === 'undefined') options.ry = this.line_width;
-        this.svg.innerHTML += `<rect x="${x}" y = "${y}" width="${w}" height="${h}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${options.rx}" ry="${options.ry}" />`;
+        if (typeof options.clip === 'undefined') options.clip = false;
+        let str_clip_path = '';
+        if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
+
+        let e = document.createElement('rect');
+        e.setAttribute('x', x);
+        e.setAttribute('y', y);
+        e.setAttribute('width', w);
+        e.setAttribute('height', h);
+        //e.setAttribute('stroke', options.stroke);
+        //e.setAttribute('fill', options.fill);
+        //e.setAttribute('stroke-width', options.stroke_width);
+        //e.setAttribute('rx', options.rx);
+        //e.setAttribute('ry', options.ry);
+        if (this.is_clipping) {
+            document.querySelector(`#${this.clip_id}`).appendChild(e);
+        }
+        else {
+            this.svg.innerHTML += `<rect x="${x}" y = "${y}" width="${w}" height="${h}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${options.rx}" ry="${options.ry}" ${str_clip_path}/>`;
+        }
+
     }
     ellipse(x, y, w, h,
         options = {
@@ -427,8 +481,25 @@ class picon {
         if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
         if (typeof options.stroke === 'undefined') options.stroke = this.color;
         if (typeof options.fill === 'undefined') options.fill = "transparent";
+        if (typeof options.clip === 'undefined') options.clip = false;
+        let str_clip_path = '';
+        if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
 
-        this.svg.innerHTML += `<ellipse cx="${x}" cy = "${y}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${w}" ry="${h}" />`;
+        let e = document.createElement('ellipse');
+        e.setAttribute('cx', x);
+        e.setAttribute('cy', y);
+        e.setAttribute('rx', w);
+        e.setAttribute('ry', h);
+        e.setAttribute('stroke', options.stroke);
+        e.setAttribute('fill', options.fill);
+        e.setAttribute('stroke-width', options.stroke_width);
+
+        if (this.is_clipping) {
+            document.querySelector(`#${this.clip_id}`).appendChild(e);
+        }
+        else {
+            this.svg.innerHTML += `<ellipse cx="${x}" cy="${y}" stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" rx="${w}" ry="${h}" ${str_clip_path}/>`;
+        }
     }
     line(x1, y1, x2, y2,
         options = {
@@ -436,7 +507,22 @@ class picon {
             fill: "transparent",
             stroke_linecap: 'round'
         }) {
-        this.svg.innerHTML += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"  stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" stroke-linecap="${options.stroke_linecap}" />`;
+
+        let e = document.createElement('line');
+        e.setAttribute('x1', x1);
+        e.setAttribute('y1', y1);
+        e.setAttribute('x2', x2);
+        e.setAttribute('y2', y2);
+        if (typeof options.clip === 'undefined') options.clip = false;
+        let str_clip_path = '';
+        if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
+
+        if (this.is_clipping) {
+            document.querySelector(`#${this.clip_id}`).appendChild(e);
+        }
+        else {
+            this.svg.innerHTML += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"  stroke="${options.stroke}" fill="${options.fill}" stroke-width="${options.stroke_width}" stroke-linecap="${options.stroke_linecap}" />`;
+        }
     }
     text(text, x, y,
         options = {
@@ -454,8 +540,20 @@ class picon {
         if (typeof options.font_weight === 'undefined') options.font_weight = '600';
         if (typeof options.font_size === 'undefined') options.font_size = this.fontsize * 0.5;
         if (typeof options.color === 'undefined') options.color = this.color;
+        if (typeof options.clip === 'undefined') options.clip = false;
+        let str_clip_path = '';
+        if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
+        let e = document.createElement('text');
+        e.setAttribute('text', text);
+        e.setAttribute('x', x);
+        e.setAttribute('y', y);
 
-        this.svg.innerHTML += `<text x="${x}" y="${y}" fill="${options.color}" font-family="${options.font_family}" font-style="${options.font_style}" font-weight=${options.font_weight} text-anchor="${options.text_anchor}" font-size="${options.font_size}" alignment-baseline="bottom">${text}</text>`;
+        if (this.is_clipping) {
+            document.querySelector(`#${this.clip_id}`).appendChild(e);
+        }
+        else {
+            this.svg.innerHTML += `<text x="${x}" y="${y}" fill="${options.color}" font-family="${options.font_family}" font-style="${options.font_style}" font-weight=${options.font_weight} text-anchor="${options.text_anchor}" font-size="${options.font_size}" alignment-baseline="bottom">${text}</text>`;
+        }
     }
     polygon(str_points,
         options = {
@@ -465,8 +563,18 @@ class picon {
         if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
         if (typeof options.stroke === 'undefined') options.stroke = this.color;
         if (typeof options.fill === 'undefined') options.fill = "transparent";
+        if (typeof options.clip === 'undefined') options.clip = false;
+        let str_clip_path = '';
+        if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
 
-        this.svg.innerHTML += `<polygon points="${str_points}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
+        let e = document.createElement('polygon');
+        e.setAttribute('points', str_points);
+        if (this.is_clipping) {
+            document.querySelector(`#${this.clip_id}`).appendChild(e);
+        }
+        else {
+            this.svg.innerHTML += `<polygon points="${str_points}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
+        }
     }
     path(str_path,
         options = {
@@ -477,33 +585,104 @@ class picon {
         if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
         if (typeof options.stroke === 'undefined') options.stroke = this.color;
         if (typeof options.fill === 'undefined') options.fill = "transparent";
+        if (typeof options.clip === 'undefined') options.clip = false;
+        let str_clip_path = '';
+        if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
+
 
         //str_path = str_path.replace(/ /g, '');
         str_path = str_path.replace(/\n/g, '');
 
-        this.svg.innerHTML += `<path d="${str_path}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
+        let e = document.createElement('path');
+        e.setAttribute('d', str_path);
+
+
+        if (this.is_clipping) {
+            document.querySelector(`#${this.clip_id}`).appendChild(e);
+        }
+        else {
+            this.svg.innerHTML += `<path d="${str_path}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
+        }
     }
+    /**
+     * 
+     * @param {*} cx 
+     * @param {*} cy 
+     * @param {*} r 
+     * @param {*} start 
+     * @param {*} stop set smaller size than start angle
+     * @param {*} options 
+     * @returns 
+     */
     arc(cx, cy, r, start, stop,
         options = {
             stroke_width: this.line_width,
             stroke: this.color,
             fill: "transparent",
+            clip: false,
+            large: 0,
+            draw: true
         }
     ) {
         if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
         if (typeof options.stroke === 'undefined') options.stroke = this.color;
         if (typeof options.fill === 'undefined') options.fill = "transparent";
+        if (typeof options.clip === 'undefined') options.clip = false;
+        if (typeof options.draw === 'undefined') options.draw = true;
+        if (typeof options.large === 'undefined') options.large = 0;
+        let str_clip_path = '';
+        if (options.clip) str_clip_path = `clip-path="url(#${this.clip_id})"`;
+
         let x1 = cx + r * Math.cos(this.d2r(start));
         let y1 = cy + r * Math.sin(this.d2r(start));
         let x2 = parseInt(cx + r * Math.cos(this.d2r(stop)));
         let y2 = cy + r * Math.sin(this.d2r(stop));
         let dx = x2 - x1;
         let dy = y2 - y1;
-        let str_path = `M ${x1} ${y1} A ${r} ${r} 0 0 0 ${x2} ${y2}`;
+        let str_path = `M ${x1} ${y1} A ${r} ${r} 0 ${options.large} ${options.large} ${x2} ${y2}`;
 
-        this.svg.innerHTML += `<path d="${str_path}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}" rx="${this.stroke_width}" ry="${this.line_width}"></polygon>`
+
+        if (options.draw) {
+            let e = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+            e.setAttribute('d', str_path);
+            e.setAttribute('fill', options.fill);
+            e.setAttribute('stroke', options.stroke);
+            e.setAttribute('stroke-width', options.stroke_width);
+
+            if (this.is_clipping) {
+                document.querySelector(`#${this.clip_id}`).appendChild(e);
+            }
+            else {
+                this.svg.appendChild(e);
+                //this.svg.innerHTML += `<path d="${str_path}" fill="${options.fill}" stroke="${options.stroke}" stroke-width="${options.stroke_width}"></path>`
+
+            }
+        }
+
+        return {
+            getD: function () {
+                return str_path;
+            }
+        }
+
+
+
     }
 
+    async beginClip() {
+        this.clip_id = `${this.name}_${this.getRandomID()}`;
+        this.svg.innerHTML += `<defs><clipPath id="${this.clip_id}"></clipPath></defs>`;
+        this.is_clipping = true;
+        return Promise.resolve(1);
+    }
+    async endClip() {
+        this.is_clipping = false;
+        return Promise.resolve(1);
+    }
+
+    getRandomID() {
+        return Math.random().toString(32).substring(2);
+    }
 }
 
 function addSVGElement(svg_width, svg_height, element_appended) {
@@ -627,6 +806,18 @@ function loadPiconTags(dom_picon) {
                 new picon(`#${e.id}`, name, {
                     volume: {
                         value: value,
+                    }
+                });
+            }
+            else if (name == 'chat') {
+                let angle;
+                let text;
+                if ((angle = e.getAttribute('data-pc-angle')) == null) { angle = picon_defaults.chat.angle }
+                if ((text = e.getAttribute('data-pc-text')) == null) { text = picon_defaults.chat.text }
+                new picon(`#${e.id}`, name, {
+                    chat: {
+                        angle: angle,
+                        text: text
                     }
                 });
             }

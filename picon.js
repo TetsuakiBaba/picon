@@ -439,7 +439,7 @@ class picon {
         document.querySelector(`${dom_key}`).innerHTML = '';
         this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
         // debug red frame
-        this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
 
         this.ellipse(
             this.size.w * (8 / 16), this.size.h * (6 / 16),

@@ -124,9 +124,22 @@ function createPiconElements() {
         let button2 = buildElement('button', 'copy', 'btn btn-secondary btn-sm', '', div_grid2);
         button2.setAttribute('data-clipboard-target', `#${p.id}_svg`);
         button2.id = `btn-copy`;
+
+        let button3 = buildElement('button', 'download', 'btn btn-secondary btn-sm', '', div_grid2);
+        button3.addEventListener('click', function () {
+            // p2.id にsvgタグがある
+            let content = document.querySelector(`#${p2.id}`).textContent;
+            let blob = new Blob([content], { "type": "image/svg+xml" });
+            let a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.setAttribute('download', `picon_${p.id}.svg`);
+            a.click();
+
+        })
+
+
     }
 
-    console.log(picons_placeholder);
     let es = document.querySelectorAll('#btn-copy');
     for (let element of es) {
         let clipboard = new ClipboardJS(element);

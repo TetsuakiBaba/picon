@@ -38,6 +38,9 @@ picon_defaults = {
     person: {
         size: 84,
         text: 'Smith'
+    },
+    compass: {
+        angle: 0
     }
 
 }
@@ -123,6 +126,12 @@ class picon {
                 if (typeof options.person.size === 'undefined') options.person.size = picon_defaults.person.size;
             }
             this.createSVGPerson(dom_key, options);
+        }
+        else if (name === 'compass') {
+            if (typeof options.compass != 'undefined') {
+                if (typeof options.compass.angle === 'undefined') options.compass.angle = picon_defaults.compass.angle;
+            }
+            this.createSVGCompass(dom_key, options);
         }
     }
 
@@ -348,7 +357,74 @@ class picon {
                 font_size: this.fontsize * 0.2
             }
         )
+
     }
+    createSVGArrow(dom_key, options = {}) {
+        let angle = -1 * parseFloat(options.arrow.angle);
+        let r = this.size.w * 0.5 - this.line_width * 2.5;
+        let l = r; // length of arrow 
+        // そのままだと追加してしまうので、対象domの中身は一回クリア
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
+
+        if (options.arrow.type == 'normal') {
+            this.line(this.size.w / 2, this.size.h / 2,
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)))
+
+            this.line(this.size.w / 2, this.size.h / 2,
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) * -1,
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) * -1)
+
+            this.line(
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)),
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) - l * Math.cos(this.d2r(45 + angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) - l * Math.sin(this.d2r(45 + angle))
+            )
+            this.line(
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)),
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) - l * Math.cos(this.d2r(-45 + angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) - l * Math.sin(this.d2r(-45 + angle))
+            )
+        }
+        else if (options.arrow.type == 'chevron') {
+            r *= 0.5;
+            this.line(
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)),
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) - l * Math.cos(this.d2r(45 + angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) - l * Math.sin(this.d2r(45 + angle))
+            );
+            this.line(
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)),
+                this.size.w / 2 + r * Math.cos(this.d2r(angle)) - l * Math.cos(this.d2r(-45 + angle)),
+                this.size.h / 2 + r * Math.sin(this.d2r(angle)) - l * Math.sin(this.d2r(-45 + angle)));
+        }
+
+
+        if (options.arrow.surround == 'none') {
+
+        }
+        else if (options.arrow.surround == 'circle') {
+            this.ellipse(
+                this.size.w / 2, this.size.h / 2,
+                (this.size.w - this.line_width) / 2, (this.size.h - this.line_width) / 2
+            );
+        }
+        else if (options.arrow.surround == 'square') {
+            this.rect(
+                this.line_width * 0.5, this.line_width * 0.5,
+                this.size.w - this.line_width, this.size.h - this.line_width
+            );
+        }
+    }
+
+
 
     createSVGVolume(dom_key, options = {}) {
         let volume = parseInt(options.volume.value);
@@ -467,6 +543,42 @@ class picon {
             { font_size: this.fontsize * 0.2 });
     }
 
+
+    createSVGCompass(dom_key, options = {}) {
+        let angle = -1 * parseInt(options.compass.angle);
+        let r = this.size.w * 0.5 - this.line_width * 1;
+        let r2 = this.size.w * 0.5 - this.line_width * 3.5;
+        let l = r; // length of arrow 
+        // そのままだと追加してしまうので、対象domの中身は一回クリア
+        document.querySelector(`${dom_key}`).innerHTML = '';
+        this.svg = addSVGElement(this.size.w, this.size.h, document.querySelector(dom_key));
+        // debug red frame
+        //this.rect(0, 0, this.size.w, this.size.h, { stroke: 'red', stroke_width: 1 });
+
+        this.ellipse(this.size.w / 2, this.size.h / 2, r, r);
+        this.path(
+            `
+            M ${this.size.w / 2}, ${this.size.h / 2 + r - this.line_width * 1.5}
+            L ${this.size.w * (10 / 16)}, ${this.size.h / 2}
+            L ${this.size.w * (8 / 16)}, ${this.size.h / 2 - r + this.line_width * 1.5}
+            L ${this.size.w * (6 / 16)}, ${this.size.h / 2}
+            L ${this.size.w / 2}, ${this.size.h / 2 + r - this.line_width * 1.5}
+            Z
+            `,
+            {
+                transform: `rotate(${angle})`
+            }
+        );
+        this.path(
+            `
+            M ${this.size.w * (8 / 16)}, ${this.size.h / 2 - r + this.line_width * 1.5}
+            L ${this.size.w * (6 / 16)}, ${this.size.h / 2}
+            L ${this.size.w * (10 / 16)}, ${this.size.h / 2}
+            Z            
+            `,
+            { stroke_width: 0, fill: this.color, transform: `rotate(${angle})` }
+        );
+    }
 
 
     /**
@@ -637,6 +749,7 @@ class picon {
             transform_origin: 'center',
             transform: ''
         }) {
+
         if (typeof options.stroke_width === 'undefined') options.stroke_width = this.line_width;
         if (typeof options.stroke === 'undefined') options.stroke = this.color;
         if (typeof options.fill === 'undefined') options.fill = "transparent";
@@ -894,6 +1007,16 @@ function loadPiconTags(dom_picon) {
                     person: {
                         size: size,
                         text: text
+                    }
+                });
+            }
+            else if (name == 'compass') {
+                let angle;
+                if ((angle = e.getAttribute('data-pc-angle')) == null) { angle = picon_defaults.compass.angle }
+
+                new picon(`#${e.id}`, name, {
+                    compass: {
+                        angle: angle
                     }
                 });
             }

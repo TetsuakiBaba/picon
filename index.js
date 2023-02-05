@@ -64,6 +64,12 @@ var picon_list = [
             { name: 'text', type: 'text', value: picon_defaults.person.text },
             { name: 'size', type: "number", value: picon_defaults.person.size }
         ]
+    },
+    {
+        id: 'compass',
+        doms: [
+            { name: 'angle', type: 'number', value: picon_defaults.compass.angle }
+        ]
     }
 
 ]

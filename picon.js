@@ -40,7 +40,7 @@ picon_defaults = {
         text: 'Smith'
     },
     compass: {
-        angle: 0
+        angle: -30
     }
 
 }
@@ -1029,4 +1029,4 @@ function loadPiconTags(dom_picon) {
 
     }
 }
-//loadPiconTags();
+loadPiconTags();

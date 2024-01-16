@@ -46,6 +46,12 @@ var picon_list = [
         ]
     },
     {
+        id: 'folder',
+        doms: [
+            { name: 'text', type: 'text', value: picon_defaults.folder.text }
+        ]
+    },
+    {
         id: 'volume',
         doms: [
             { name: 'value', type: "number", value: picon_defaults.volume.value }
@@ -71,7 +77,6 @@ var picon_list = [
             { name: 'angle', type: 'number', value: picon_defaults.compass.angle }
         ]
     }
-
 ]
 
 function createPiconElements() {
@@ -140,7 +145,6 @@ function createPiconElements() {
             a.href = window.URL.createObjectURL(blob);
             a.setAttribute('download', `picon_${p.id}.svg`);
             a.click();
-
         })
 
 

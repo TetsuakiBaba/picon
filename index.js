@@ -212,9 +212,6 @@ function updateInput(dom) {
     str += '</i>';
     document.querySelector(`#${name}_code`).innerText = str;
     document.querySelector(`#${name}_svg`).innerText = picon.innerHTML;
-
-
-
     updateMasonry();
 }
 

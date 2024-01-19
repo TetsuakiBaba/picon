@@ -11,6 +11,5 @@ PICON is still in beta version and is subject to frequent changes and modificati
  3. add your original picon function (createSVGYourOrigianlPiconName) in picon.js
  4. add your original picon code in LoadPiconTag() in picon.js
 
-
 # Reference
   * SVG Tutorial, https://developer.mozilla.org/ja/docs/Web/SVG/Tutorial

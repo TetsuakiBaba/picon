@@ -48,6 +48,8 @@ picon_defaults = {
 
 }
 class picon {
+    setParameters(options = {}) {
+    }
     constructor(dom_key, name, options = {}) {
 
         let element = document.querySelector(dom_key);

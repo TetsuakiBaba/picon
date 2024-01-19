@@ -19,8 +19,19 @@
 
 <body>
     <div class="container-sm">
-        <h1 class="display-1 pt-5">Picon<span style="vertical-align:1.7em;font-size:0.3em;"><i data-pc-id="circle"
+
+        <h1 class="display-1 pt-5">
+            Picon<span style="vertical-align:1.7em;font-size:0.3em;"><i data-pc-id="circle"
                     data-pc-text="&beta;"></i></span>
+        </h1>
+
+        <h1 class="display-2 pt-2">
+            <span id="animation_clock"></span>
+            <span id="animation_calendar"></span>
+            <span id="animation_chat"></span>
+            <span id="animation_person"></span>
+            <span id="animation_volume"></span>
+            <span id="animation_filetype"></span>
         </h1>
 
         <p class="lead">
@@ -33,395 +44,6 @@
 
         <h1 class="display-5 mt-4">icons</h1>
         <div class="row" id="picons">
-            <!-- clock -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">clock</h6>
-                        <div id="clock_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="clock"></i>
-                        </div>
-
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" data-pc-parameter="hour" class="form-control"
-                                        data-pc-target-name='clock' value="19" onchange="updateInput(this);">
-                                    <label>data-pc-hour</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" data-pc-target-name="clock" data-pc-parameter="minute"
-                                        class="form-control" value="0" onchange="updateInput(this);">
-                                    <label>data-pc-minute</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p class="border card-text small p-2 mt-4 mb-0" id="clock_code">
-                        </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#clock_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="clock_svg">
-                        </p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#clock_svg">copy</button>
-                        </div>
-
-
-
-                    </div>
-                    </p>
-
-
-
-                </div>
-            </div> -->
-            <!-- battery -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">battery</h6>
-                        <div id="battery_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="battery" data-pc-percentage="80"></i>
-                        </div>
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" data-pc-parameter="percentage" class="form-control"
-                                        data-pc-target-name='battery' value="86" onchange="updateInput(this);">
-                                    <label>data-pc-percentage</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select type="number" data-pc-parameter="show-value" class="form-select"
-                                        data-pc-target-name='battery' value="80" onchange="updateInput(this);">
-                                        <option selected>false</option>
-                                        <option>true</option>
-                                    </select>
-                                    <label>data-pc-show-value</label>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="border card-text small p-2 mt-4 mb-0" id="battery_code">
-                        </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#battery_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="battery_svg"> </p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#battery_svg">copy</button>
-                        </div>
-
-
-
-                    </div>
-                    </p>
-
-
-
-                </div>
-            </div> -->
-            <!-- calendar -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">calendar</h6>
-                        <div id="calendar_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="calendar" data-pc-text="26"></i>
-                        </div>
-
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" data-pc-parameter="text" class="form-control"
-                                        data-pc-target-name='calendar' value="26" onchange="updateInput(this);">
-                                    <label>data-pc-text</label>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="border card-text small p-2 mt-4 mb-0" id="calendar_code">
-                        </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#calendar_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="calendar_svg">
-                        </p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#calendar_svg">copy</button>
-                        </div>
-
-
-
-                    </div>
-                    </p>
-
-
-
-                </div>
-            </div> -->
-            <!-- badge -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">badge</h6>
-                        <div id="badge_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="badge" data-pc-text="GT"></i>
-                        </div>
-
-
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" data-pc-parameter="text" class="form-control"
-                                        data-pc-target-name='badge' value="RR" onchange="updateInput(this);">
-                                    <label>data-pc-text</label>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="border card-text small p-2 mt-4 mb-0" id="badge_code">
-                            &lt;i data-pc-id=&quot;badge&quot;
-                            data-pc-percentage=&quot;80&quot;&gt;&lt;/i&gt;
-                        </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#badge_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="badge_svg">
-                            &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;
-                            xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;
-                            xmlns:svgjs=&quot;http://svgjs.dev/svgjs&quot; width=&quot;80&quot;
-                            height=&quot;80&quot;&gt;&lt;rect width=&quot;64&quot; height=&quot;40&quot;
-                            fill=&quot;none&quot; stroke-linecap=&quot;round&quot; stroke-width=&quot;8&quot;
-                            stroke=&quot;#212529&quot; x=&quot;8&quot; y=&quot;20&quot; rx=&quot;8&quot;
-                            ry=&quot;8&quot;&gt;&lt;/rect&gt;&lt;rect width=&quot;44.800000000000004&quot;
-                            height=&quot;40&quot; fill=&quot;#212529&quot; stroke-linecap=&quot;round&quot;
-                            stroke-width=&quot;0&quot; stroke=&quot;#212529&quot; x=&quot;12&quot;
-                            y=&quot;20&quot;&gt;&lt;/rect&gt;&lt;line x1=&quot;76&quot; y1=&quot;33.6&quot;
-                            x2=&quot;76&quot; y2=&quot;46.4&quot; stroke-linecap=&quot;round&quot;
-                            stroke-width=&quot;8&quot; stroke=&quot;#212529&quot;&gt;&lt;/line&gt;&lt;/svg&gt;
-                        </p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#badge_svg">copy</button>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div> -->
-            <!-- circle -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">circle</h6>
-                        <div id="circle_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="circle" data-pc-text="魔"></i>
-                        </div>
-
-
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" data-pc-parameter="text" class="form-control"
-                                        data-pc-target-name='circle' value="Z" onchange="updateInput(this);">
-                                    <label>data-pc-text</label>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="border card-text small p-2 mt-4 mb-0" id="circle_code"> </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#circle_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="circle_svg"></p>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#circle_svg">copy</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- arrow -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">arrow</h6>
-                        <div id="arrow_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="arrow" data-pc-angle="0"></i>
-                        </div>
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" data-pc-parameter="angle" class="form-control"
-                                        data-pc-target-name='arrow' value="153" onchange="updateInput(this);">
-                                    <label>data-pc-angle</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select type="number" data-pc-parameter="type" class="form-select"
-                                        data-pc-target-name='arrow' onchange="updateInput(this);">
-                                        <option selected>normal</option>
-                                        <option>chevron</option>
-                                    </select>
-                                    <label>data-pc-type</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <select type="number" data-pc-parameter="surround" class="form-select"
-                                        data-pc-target-name='arrow' onchange="updateInput(this);">
-                                        <option selected>none</option>
-                                        <option>circle</option>
-                                        <option>square</option>
-                                    </select>
-                                    <label>data-pc-surround</label>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="border card-text small p-2 mt-4 mb-0" id="arrow_code"> </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#arrow_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="arrow_svg"></p>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#arrow_svg">copy</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- filetype -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">filetype</h6>
-                        <div id="filetype_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="filetype" data-pc-text="dbz"></i>
-                        </div>
-
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" data-pc-parameter="text" class="form-control"
-                                        data-pc-target-name='filetype' value="dbz" onchange="updateInput(this);">
-                                    <label>data-pc-text</label>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="border card-text small p-2 mt-4 mb-0" id="filetype_code"> </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#filetype_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="filetype_svg"></p>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#filetype_svg">copy</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- volume -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">volume</h6>
-                        <div id="volume_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="volume" data-pc-value="89"></i>
-                        </div>
-
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" data-pc-parameter="value" min='0' max='100'
-                                        class="form-control" data-pc-target-name='volume' value="89"
-                                        onchange="updateInput(this);">
-                                    <label>data-pc-value</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <p class="border card-text small p-2 mt-4 mb-0" id="volume_code"> </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#volume_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="volume_svg"></p>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#volume_svg">copy</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
-            <!-- chat -->
-            <!-- <div class="col-md-6 col-lg-4 col-xxl-3 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="card-subtitle text-muted">chat</h6>
-                        <div id="chat_placeholder" class="text-center" style="font-size:5em;">
-                            <i data-pc-id="chat" data-pc-value="89"></i>
-                        </div>
-
-                        parameters
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" data-pc-parameter="angle" class="form-control"
-                                        data-pc-target-name='chat' value="-51" onchange="updateInput(this);">
-                                    <label>data-pc-angle</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" data-pc-parameter="text" class="form-control"
-                                        data-pc-target-name='chat' value="..." onchange="updateInput(this);">
-                                    <label>data-pc-text</label>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="border card-text small p-2 mt-4 mb-0" id="chat_code"> </p>
-                        <div class="d-grid mb-4 gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#chat_code">copy</button>
-                        </div>
-                        <p class="border p-2 m-0" style="font-size:0.5em" id="chat_svg"></p>
-
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-secondary btn-sm" id="btn-copy"
-                                data-clipboard-target="#chat_svg">copy</button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
             <!-- persons 人数指定やグリッド表示，ランダム表示に対応-->
         </div>
         <h1 class="display-5 mt-4">Quick start</h1>
@@ -571,7 +193,7 @@
 
         <hr>
         <footer class="small text-muted text-center mb-4">
-            2023 &copy; Tetsuaki baba <a href="https://github.com/TetsuakiBaba/picon" target="_blank"><i
+            2024 &copy; Tetsuaki baba <a href="https://github.com/TetsuakiBaba/picon" target="_blank"><i
                     class="bi bi-github"></i></a>
         </footer>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
@@ -596,6 +218,75 @@
 
         <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
+        <script>
+            // pcnのパラメータを設定し直して更新
+            let h = 0;
+            var m = 0;
+
+            setInterval(() => {
+                new picon('#animation_clock', 'clock', {
+                    clock: {
+                        hour: h,
+                        minute: m
+                    }
+                });
+                m += 0.5;
+                h += 0.01;
+            }, 30);
+            let d = 0;
+            setInterval(() => {
+                new picon('#animation_calendar', 'calendar', {
+                    calendar: {
+                        text: `${d % 31}`,
+                    }
+                });
+                d++;
+            }, 1000);
+            let messages = ['Hi', 'Hola', 'Ciao', 'やあ', '你好', 'नमस्ते'];
+            let pos = 0;
+            setInterval(() => {
+                new picon('#animation_chat', 'chat', {
+                    chat: {
+                        text: messages[pos],
+                    }
+                });
+                pos++;
+                if (pos >= messages.length) pos = 0;
+            }, 2000);
+            let names = ['Hi', 'Hola', 'Ciao', 'やあ', '你好', 'नमस्ते'];
+            setInterval(() => {
+                new picon('#animation_person', 'person', {
+                    person: {
+                        text: messages[pos],
+                        size: 80
+                    }
+                });
+                if (pos >= messages.length) pos = 0;
+            }, 2000);
+            let volume = 0;
+            setInterval(() => {
+                new picon('#animation_volume', 'volume', {
+                    volume: {
+                        value: Math.abs(100 * Math.sin(volume / 100))
+                    }
+                });
+                volume += 1;
+
+
+            }, 30);
+
+            let filetypes = ['doc', 'docx', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx', 'zip', 'rar', '7z', 'txt', 'csv',
+                'json', 'xml', 'html', 'css', 'js', 'php', 'c', 'cpp', 'java', 'py', 'rb', 'go', 'swift', 'sql',
+                'psd', 'ai', 'svg', 'png', 'jpg', 'jpeg', 'gif', 'mp3', 'mp4', 'wav', 'mov', 'avi', 'flv', 'wmv',
+                'exe', 'dmg', 'iso'];
+            setInterval(() => {
+                new picon('#animation_filetype', 'filetype', {
+                    filetype: {
+                        text: filetypes[Math.floor(Math.random() * filetypes.length)]
+                    }
+                });
+            }, 500);
+        </script>
 </body>
 
 </html>
